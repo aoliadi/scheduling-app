@@ -1,3 +1,20 @@
-/* h1 {
-    border: 2px solid red;
-} */
+* {
+    box-sizing: border-box;
+}
+
+a {
+    display: inline-block;
+}
+
+:root {
+    --invalid: red;
+    --valid: green;
+}
+
+.input--invalid {
+    border: 2px solid var(--invalid);
+}
+
+.input--valid {
+    border: 2px solid var(--valid);
+}

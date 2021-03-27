@@ -1,4 +1,104 @@
 "use strict";
-
+ 
 // console.log( "it works!")
+const overallProcedure = {
 
+    username: 'admin',
+    
+    domElements: {
+        usernameInput: null,
+        submitButton: null,
+    },
+    
+    handlesEvents: {
+        username: null,
+        submit: null
+    },
+
+    centresInfo: {
+        hallName: 'Moremi Hall',
+        capacity: 10,
+        availableSeat: 9,
+        seatsOccupied: [ 2 ]
+    },
+    
+    //starts operation
+    initialize() {
+        const domObjectKey = this.domElements;
+        
+        //query-select the elements from the DOM
+        domObjectKey.usernameInput = document.querySelector('#username-js');
+        domObjectKey.submitButton = document.querySelector('#btn--submit-js');
+
+        this.attachEvents( domObjectKey.usernameInput, domObjectKey.submitButton );
+    },
+    
+    //attach event listeners
+    attachEvents( input, button ) {
+        const handlerObjectKey = this.handlesEvents;
+        
+        //add event listeners
+        handlerObjectKey.username = input.addEventListener( 'input', (e) => this.checkInputValue(e) );
+        handlerObjectKey.submit = button.addEventListener( 'click', (e) => this.submission(e) );
+    },
+    
+    //check value of user's input
+    checkInputValue( e ) {
+        const theInputBar = e.target;
+        let theInputValue = theInputBar.value.trim();
+
+        if ( theInputValue.length < 2 ) {
+            theInputBar.classList.add('input--invalid');
+        } else {
+            theInputBar.classList.remove('input--invalid');
+            theInputBar.classList.add('input--valid');
+            this.domElements.submitButton.disabled = false;
+        }
+
+        this.username = theInputValue;
+
+    },
+
+    submission( e ) {
+        e.preventDefault();
+
+        this.giveSeatNumber();
+    },
+
+    getRandomNumber( range ) {
+        let randomNumber = Math.floor( Math.random() * range );
+        return randomNumber;
+    },
+
+    giveSeatNumber() {
+
+        let theCentre = this.centresInfo,
+            seatOwner = this.username,
+            seatNumber = this.getRandomNumber( theCentre.availableSeat );
+
+        if ( seatNumber === 0 && !theCentre.seatsOccupied.includes(1) ) {
+            theCentre.seatsOccupied.push(seatNumber);
+        } else if ( theCentre.seatsOccupied.includes(seatNumber) ) {
+            this.giveSeatNumber();
+        } else {
+            theCentre.seatsOccupied.push(seatNumber);
+            theCentre.availableSeat -= 1;
+            // console.log(`Your seat number is ${seatNumber}. Goodluck!`);
+            console.log(theCentre.seatsOccupied);
+            // console.log(theCentre.availableSeat);
+        }
+
+
+        
+
+
+        
+        
+
+    }
+    
+    
+    
+}
+
+window.addEventListener( 'DOMContentLoaded', () => overallProcedure.initialize() )
