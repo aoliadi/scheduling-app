@@ -18,3 +18,8 @@ a {
 .input--valid {
     border: 2px solid var(--valid);
 }
+
+/* ALERT */
+.alert__container {
+    border: 2px solid red;
+}
