@@ -1,12 +1,15 @@
 "use strict";
+
+
+let endpoint = `http://localhost:8000/centres/`;
  
 // console.log( "it works!")
 const overallProcedure = {
 
-    currentUserDetails: {
+    // currentUserDetails: {
         username: null,
         userSeatNumber: null,
-    }
+    // },
     
     domElements: {
         usernameInput: null,
@@ -18,11 +21,18 @@ const overallProcedure = {
         submit: null
     },
 
-    centresInfo: {
-        hallName: 'Moremi Hall',
-        capacity: 10,
-        numOfAvailableSeat: 10,
-        seatsOccupied: [ ]
+    centresInfo: {},
+
+    //fetch necessary data
+    async fetchData( uri ) {
+
+        let response = await fetch( uri + 2 ),
+                data = await response.json();
+
+        this.centresInfo = data;
+        // console.log(this.centresInfo);
+
+        this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton );
     },
     
     //starts operation
@@ -33,7 +43,9 @@ const overallProcedure = {
         domObjectKey.usernameInput = document.querySelector('#username-js');
         domObjectKey.submitButton = document.querySelector('#btn--submit-js');
 
-        this.attachEvents( domObjectKey.usernameInput, domObjectKey.submitButton );
+        //calls for data to be fetched
+        this.fetchData( endpoint );
+
     },
     
     //attach event listeners
@@ -49,9 +61,12 @@ const overallProcedure = {
     checkInputValue( e ) {
         const theInputBar = e.target;
         let theInputValue = theInputBar.value.trim();
+        // console.log(theInputValue)
 
         if ( theInputValue.length < 2 ) {
+            theInputBar.classList.remove('input--valid');
             theInputBar.classList.add('input--invalid');
+            this.domElements.submitButton.disabled = true;
         } else {
             theInputBar.classList.remove('input--invalid');
             theInputBar.classList.add('input--valid');
@@ -67,7 +82,7 @@ const overallProcedure = {
         let theCentre = this.centresInfo;
         
         if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
-            console.log('No seat available.')
+            console.log('No seat available.');
         } else {
             this.getRandomNumber( this.centresInfo.numOfAvailableSeat );
         }
@@ -100,17 +115,40 @@ const overallProcedure = {
         this.giveSeatNumber()
     },
     
+    async sendToDatabase( uri, data ) {
+        // delete data.id;
+        const otherOptions = {
+                method: "PATCH",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            };
+
+        await fetch( uri, otherOptions );
+    },
+
     giveSeatNumber() {
         // debugger;
-        window.location.assign('./another.html');
-         
+        // window.location.assign('./another.html');
+
+        this.sendToDatabase( endpoint, this.centresInfo );
+
         this.revealSeatNumber();
     },
     
     revealSeatNumber() {
-        // window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
-        localStorage.setItem(this.username, this.userSeatNumber);
+        window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
+        // localStorage.setItem(this.username, this.userSeatNumber);
     },
 }
 
-window.addEventListener( 'DOMContentLoaded', () => overallProcedure.initialize() )
+
+// window.addEventListener( 
+//     'DOMContentLoaded', 
+//     () => overallProcedure.fetchData(endpoint) 
+// );
+window.addEventListener( 
+    'DOMContentLoaded', 
+    () => overallProcedure.initialize()
+);

@@ -1,12 +1,51 @@
 {
-    "blogs": [
-        "a",
-        "b",
-        "c"
-    ],
-    "who": [
+  "centres": [
+    {
+      "id": 1,
+      "hallName": "Moremi Hall",
+      "capacity": 100,
+      "numOfAvailableSeat": 96,
+      "seatsOccupied": [
+        90,
+        88,
+        87,
+        67
+      ]
+    },
+    {
+      "id": 2,
+      "hallName": "Science Room 1",
+      "capacity": 50,
+      "numOfAvailableSeat": 48,
+      "seatsOccupied": [
         2,
-        3,
+        9
+      ]
+    },
+    {
+      "id": 3,
+      "hallName": "Science Room 2",
+      "capacity": 50,
+      "numOfAvailableSeat": 50,
+      "seatsOccupied": []
+    },
+    {
+      "hallName": "Science Room 1",
+      "capacity": 50,
+      "numOfAvailableSeat": 47,
+      "seatsOccupied": [
+        2,
+        9,
         5
-    ]
+      ],
+      "id": 4
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "userSeatNumber": null
+    }
+  ]
 }
