@@ -3,8 +3,10 @@
 // console.log( "it works!")
 const overallProcedure = {
 
-    username: 'admin',
-    userSeatNumber: null,
+    currentUserDetails: {
+        username: null,
+        userSeatNumber: null,
+    }
     
     domElements: {
         usernameInput: null,
@@ -101,12 +103,13 @@ const overallProcedure = {
     giveSeatNumber() {
         // debugger;
         window.location.assign('./another.html');
-        
+         
         this.revealSeatNumber();
     },
     
     revealSeatNumber() {
         // window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
+        localStorage.setItem(this.username, this.userSeatNumber);
     },
 }
 
