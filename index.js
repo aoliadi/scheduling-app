@@ -4,6 +4,7 @@
 const overallProcedure = {
 
     username: 'admin',
+    userSeatNumber: null,
     
     domElements: {
         usernameInput: null,
@@ -18,8 +19,8 @@ const overallProcedure = {
     centresInfo: {
         hallName: 'Moremi Hall',
         capacity: 10,
-        availableSeat: 9,
-        seatsOccupied: [ 2 ]
+        numOfAvailableSeat: 10,
+        seatsOccupied: [ ]
     },
     
     //starts operation
@@ -61,44 +62,52 @@ const overallProcedure = {
 
     submission( e ) {
         e.preventDefault();
-
-        this.giveSeatNumber();
+        let theCentre = this.centresInfo;
+        
+        if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
+            console.log('No seat available.')
+        } else {
+            this.getRandomNumber( this.centresInfo.numOfAvailableSeat );
+        }
     },
-
+    
     getRandomNumber( range ) {
         let randomNumber = Math.floor( Math.random() * range );
-        return randomNumber;
+        
+        this.checkIfSeatIsAvailable( randomNumber );
     },
-
-    giveSeatNumber() {
-
-        let theCentre = this.centresInfo,
-            seatOwner = this.username,
-            seatNumber = this.getRandomNumber( theCentre.availableSeat );
-
-        if ( seatNumber === 0 && !theCentre.seatsOccupied.includes(1) ) {
-            theCentre.seatsOccupied.push(seatNumber);
-        } else if ( theCentre.seatsOccupied.includes(seatNumber) ) {
-            this.giveSeatNumber();
+    
+    checkIfSeatIsAvailable( numberGenerated ) {
+        let theCentre = this.centresInfo;
+        
+        if ( numberGenerated === 0 && !theCentre.seatsOccupied.includes(1) ) {
+            // debugger;
+            numberGenerated = 1;
+            theCentre.seatsOccupied.push(numberGenerated);
+            theCentre.numOfAvailableSeat -= 1;
+        } else if ( numberGenerated !== 0 && !theCentre.seatsOccupied.includes(numberGenerated) ) {
+            // debugger;
+            theCentre.seatsOccupied.push(numberGenerated);
+            theCentre.numOfAvailableSeat -= 1;
         } else {
-            theCentre.seatsOccupied.push(seatNumber);
-            theCentre.availableSeat -= 1;
-            // console.log(`Your seat number is ${seatNumber}. Goodluck!`);
-            console.log(theCentre.seatsOccupied);
-            // console.log(theCentre.availableSeat);
+            // debugger;
+            this.getRandomNumber( this.centresInfo.numOfAvailableSeat );
         }
-
-
         
-
-
+        this.userSeatNumber = numberGenerated;
+        this.giveSeatNumber()
+    },
+    
+    giveSeatNumber() {
+        // debugger;
+        window.location.assign('./another.html');
         
-        
-
-    }
+        this.revealSeatNumber();
+    },
     
-    
-    
+    revealSeatNumber() {
+        // window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
+    },
 }
 
 window.addEventListener( 'DOMContentLoaded', () => overallProcedure.initialize() )
