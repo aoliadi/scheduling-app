@@ -11,6 +11,18 @@
 - input/save number of available space/seat
 - never give two users' the same seat number
 
+### What has been done?
+- Simple UI
+- An input to collect user's name.
+- A disabled button, that only enables when input has two character (has to be two characters, but will be refactored later)
+- A DB that holds all information. 
+    It has two resources: **the centres** and **the candidates**(users). The **centres resource** contains the hall name, its capacity, seats occupied *(the seat number)*  and seats unoccupied *(total number of seats remaining)* while the users resources contains the candidate's name, seat number (and to be included, hall).
+- 
+
+### What is the problem right now? (N.B: Once solved, the list point is deleted and a commit is made)
+
+- Sending a request to DB to update hall informations after a seat is allocated to a candidate: it keeps creating a new endpoint (i.e. new id; it duplicates)
+
 ## Stack to be used
 - HTML
 - CSS
