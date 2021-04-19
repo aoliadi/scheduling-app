@@ -23,18 +23,6 @@ const overallProcedure = {
 
     centresInfo: {},
 
-    //fetch necessary data
-    async fetchData( uri ) {
-
-        let response = await fetch( uri + 2 ),
-                data = await response.json();
-
-        this.centresInfo = data;
-        // console.log(this.centresInfo);
-
-        this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton );
-    },
-    
     //starts operation
     initialize() {
         const domObjectKey = this.domElements;
@@ -45,6 +33,19 @@ const overallProcedure = {
 
         //calls for data to be fetched
         this.fetchData( endpoint );
+    },
+
+    //fetch necessary data
+    async fetchData( uri ) {
+
+        //pending further iterations, we use only the second hall - Science Room 1 - for now.
+        let response = await fetch( uri + 2 ),
+                data = await response.json();
+
+        this.centresInfo = data;
+        // console.log(this.centresInfo);
+
+        this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton );
     },
     
     //attach event listeners
@@ -72,8 +73,8 @@ const overallProcedure = {
             this.domElements.submitButton.disabled = false;
         }
 
+        // sets username as the just collected input value
         this.username = theInputValue;
-
     },
 
     submission( e ) {
@@ -81,7 +82,7 @@ const overallProcedure = {
         let theCentre = this.centresInfo;
         
         if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
-            console.log('No seat available.');
+            alert('Oooops! No seat available. Try again later');
         } else {
             this.getRandomNumber( this.centresInfo.numOfAvailableSeat );
         }
@@ -111,34 +112,38 @@ const overallProcedure = {
         }
         
         this.userSeatNumber = numberGenerated;
-        this.giveSeatNumber()
+        this.giveSeatNumber();
     },
     
-    async sendToDatabase( uri, data ) {
-        // delete data.id;
-        const otherOptions = {
-                method: "PATCH",
-                body: JSON.stringify(data),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            };
-
-        await fetch( uri, otherOptions );
-    },
-
     giveSeatNumber() {
         // debugger;
-        // window.location.assign('./another.html');
-
+        
         this.sendToDatabase( endpoint, this.centresInfo );
-
+        
         this.revealSeatNumber();
+        // window.location.assign('./another.html');
+    },
+    
+    // async sendToDatabase( uri, data ) {
+    async sendToDatabase( uri, data ) {
+        const otherOptions = {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        };
+        await fetch( uri + 2, otherOptions );
     },
     
     revealSeatNumber() {
         window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
-        // localStorage.setItem(this.username, this.userSeatNumber);
+        
+        this.redirectUserToAnotherPage();
+    },
+    
+    redirectUserToAnotherPage() {
+        window.location.assign('./another.html');
     },
 }
 
