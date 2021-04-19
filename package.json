@@ -1,0 +1,21 @@
+{
+  "name": "scheduling app",
+  "version": "1.0.0",
+  "description": "Schedules candidates for exams and gives them seat numbers",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npx json-server --watch data/data.json --port 8000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aoliadi/scheduling-app.git"
+  },
+  "keywords": [],
+  "author": "aoliadi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aoliadi/scheduling-app/issues"
+  },
+  "homepage": "https://github.com/aoliadi/scheduling-app#readme"
+}
