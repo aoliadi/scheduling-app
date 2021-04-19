@@ -45,7 +45,6 @@ const overallProcedure = {
 
         //calls for data to be fetched
         this.fetchData( endpoint );
-
     },
     
     //attach event listeners
