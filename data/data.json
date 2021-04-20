@@ -4,39 +4,17 @@
       "id": 1,
       "hallName": "Moremi Hall",
       "capacity": 100,
-      "numOfAvailableSeat": 96,
+      "numOfAvailableSeat": 100,
       "seatsOccupied": [
-        90,
-        88,
-        87,
-        67
+        
       ]
     },
     {
       "id": 2,
       "hallName": "Science Room 1",
-      "capacity": 50,
-      "numOfAvailableSeat": 31,
+      "capacity": 35,
+      "numOfAvailableSeat": 35,
       "seatsOccupied": [
-        2,
-        9,
-        41,
-        3,
-        18,
-        23,
-        27,
-        1,
-        36,
-        8,
-        7,
-        11,
-        28,
-        24,
-        25,
-        16,
-        33,
-        19,
-        31
       ]
     },
     {

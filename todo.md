@@ -25,12 +25,14 @@
 - Handle error from fetch, so the button doesn't just stay disabled if data is fetched. Maybe, show an error or "system down" or "come back later".
 - add an entry to the users resource that holds the date and time a candidate booked a seat.
 - a radio button in the UI with id attached, which will correspond with the different halls.
+- Show user a response in form of a CSS styled alert instead of the JavaScript alert function.
 
 ### What is the problem right now? (N.B: Once solved, the list point is deleted and a commit is made)
 - Sending a request to DB to update hall informations after a seat is allocated to a candidate: it keeps creating a new endpoint (i.e. new id; it duplicates)
 **SOLVED**: I wasn't adding the specific uri for it to change.
 was sending with endpoint as *`http://localhost:8000/centres/`;* instead of *`http://localhost:8000/centres/2`*.
 N.B: 2 because I haven't added the ability to choose a specific hall. It should be ${hall_id} or something.
+
 
 
 

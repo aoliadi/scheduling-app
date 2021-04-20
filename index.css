@@ -49,6 +49,8 @@ body, .alert__container {
 /* ALERT */
 .alert__container {
     display: none;
+    background-color: aliceblue;
+
     min-height: 50vh;
     width: 80%;
     max-width: 500px;

@@ -14,6 +14,10 @@ const overallProcedure = {
     domElements: {
         usernameInput: null,
         submitButton: null,
+
+        alertContainer: null,
+        alertSeatNumber: null,
+        alertUsername: null,
     },
     
     handlesEvents: {
@@ -30,7 +34,10 @@ const overallProcedure = {
         //query-select the elements from the DOM
         domObjectKey.usernameInput = document.querySelector('#username-js');
         domObjectKey.submitButton = document.querySelector('#btn--submit-js');
-
+        domObjectKey.alertSeatNumber = document.querySelector('#alert__username-js');
+        domObjectKey.alertUsername = document.querySelector('#alert__seat-number-js');
+        domObjectKey.alertContainer = document.querySelector('#alert__container-js');
+        
         //calls for data to be fetched
         this.fetchData( endpoint );
     },
@@ -117,9 +124,8 @@ const overallProcedure = {
     
     giveSeatNumber() {
         // debugger;
-        
         this.sendToDatabase( endpoint, this.centresInfo );
-        
+
         this.revealSeatNumber();
         // window.location.assign('./another.html');
     },
@@ -133,13 +139,18 @@ const overallProcedure = {
             },
             body: JSON.stringify(data)
         };
-        await fetch( uri + 2, otherOptions );
+        // await fetch( uri + 2, otherOptions );
     },
     
     revealSeatNumber() {
-        window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
-        
-        this.redirectUserToAnotherPage();
+        // window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
+        const domObjectKey = this.domElements;
+
+        domObjectKey.alertSeatNumber.textContent = this.userSeatNumber;
+        domObjectKey.alertUsername.innerHTML = this.username;
+        domObjectKey.alertContainer.style.display = 'block'
+
+        // this.redirectUserToAnotherPage();
     },
     
     redirectUserToAnotherPage() {
