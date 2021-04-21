@@ -9,8 +9,7 @@ const overallProcedure = {
     currentUserDetails: {
         userName: null,
         userSeatNumber: null,
-        hallOfChoice: null,
-        generatedUserId: null,
+        userId: null,
         dateOfRegistration: null,
         timeOfRegistration: null,
     },
@@ -131,15 +130,15 @@ const overallProcedure = {
     
     giveSeatNumber() {
 
-        // let data = this.centresInfo;
-        // this.sendToDatabase({
-        //     endpoint,
-        //     type: "centres/2",
-        //     data,
-        //     method: "PUT"
-        // });
+        let data = this.centresInfo;
+        this.sendToDatabase({
+            endpoint,
+            type: "centres/2",
+            data,
+            method: "PUT"
+        });
         
-        let data = this.currentUserDetails;
+        data = this.currentUserDetails;
         this.sendToDatabase({
             endpoint,
             type: "userProfiles/",
@@ -151,48 +150,36 @@ const overallProcedure = {
     },
     
     storeUserDetails( {numberGenerated: seatNumber} ) {
-        // userName: null,
-        // userSeatNumber: null,
-        // hallOfChoice: null,
-        // generatedUserId: null,
-        // dateOfRegistration: null,
-        // timeOfRegistration: null,
-        
-        let dateFunc = new Date();
+        let dateFunc = new Date(),
+            year = dateFunc.getFullYear(),
+            candidateNumber = addZeroes( {theNumber: seatNumber, desiredLength: this.centresInfo.capacity.toString().length} );
 
-        let date = addZeroes( {theNumber: dateFunc.getDate(), desiredLength: 2} ),
-            month = addZeroes( {theNumber: dateFunc.getMonth() + 1, desiredLength: 2} ),
-            year = dateFunc.getFullYear();
-            candidateNumber = addZeroes( {theNumber: this.getRandomNumber( this.centreInfo ), desiredLength: 4} )
-
-
-            year = year.toString().slice(2);
-        
-
+        year = year.toString().slice(2);
         let currentTime = dateFunc.toLocaleTimeString(),
             currentDate = dateFunc.toDateString();
 
         this.currentUserDetails.userSeatNumber = seatNumber;
-        this.currentUserDetails.hallOfChoice = this.centresInfo.hallName;
-        this.currentUserDetails.generatedUserId = "" + date + month + year + this.getRandomNumber( 15 );
-
-        console.log(this.currentUserDetails.generatedUserId)
+        this.currentUserDetails.userId = "" + year + this.centresInfo.hallId + candidateNumber;
         this.currentUserDetails.dateOfRegistration = currentDate;
         this.currentUserDetails.timeOfRegistration = currentTime;
 
     },
 
+    // just as the name says, it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
     addZeroes( {desiredLength, range, theNumber} ) {
         let randomNumber = theNumber || Math.floor( Math.random() * range ),
             newNumber;
             
+        // if range is a falsy value (i.e. range is not given)
         if (range && range.length > desiredLength ) {
             newNumber = randomNumber;
         } else if (randomNumber.length !== desiredLength ) {
-            let toAdd = desiredLength - randomNumber.toString().length;
-            let arr = Array(toAdd).fill(0)
+            // this checks the number of zeroes to add
+            let toAdd = desiredLength - randomNumber.toString().length,
+                arr = Array(toAdd).fill(0); // creates an array filled with zeroes needed
             arr.push(randomNumber);
             newNumber = arr.join('');
+            debugger;
         } else {
             newNumber = randomNumber;
         }
@@ -220,7 +207,7 @@ const overallProcedure = {
         domObjectKey.alertUsername.innerHTML = this.currentUserDetails.username;
         domObjectKey.alertContainer.style.display = 'block'
 
-        // this.redirectUserToAnotherPage();
+        this.redirectUserToAnotherPage();
     },
     
     redirectUserToAnotherPage() {

@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/aoliadi/scheduling-app/issues"
   },
-  "homepage": "https://github.com/aoliadi/scheduling-app#readme"
+  "homepage": "https://github.com/aoliadi/scheduling-app#readme",
+  "dependencies": {
+    "dayjs": "^1.10.4"
+  }
 }

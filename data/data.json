@@ -3,33 +3,64 @@
     {
       "id": 1,
       "hallName": "Moremi Hall",
+      "hallId": "MHL",
       "capacity": 100,
       "numOfAvailableSeat": 100,
-      "seatsOccupied": [
-        
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 2,
       "hallName": "Science Room 1",
+      "hallId": "S1R",
       "capacity": 35,
-      "numOfAvailableSeat": 35,
+      "numOfAvailableSeat": 32,
       "seatsOccupied": [
+        26,
+        1,
+        7
       ]
     },
     {
       "id": 3,
       "hallName": "Science Room 2",
+      "hallId": "S2R",
       "capacity": 50,
       "numOfAvailableSeat": 50,
       "seatsOccupied": []
     }
   ],
-  "users": [
+  "userProfiles": [
     {
       "id": 1,
-      "username": "admin",
-      "userSeatNumber": null
+      "userName": "admin",
+      "userSeatNumber": null,
+      "hallOfChoice": null,
+      "generatedUserId": null,
+      "dateOfRegistration": null
+    },
+    {
+      "userName": "sd",
+      "userSeatNumber": 26,
+      "userId": "21S1R26",
+      "dateOfRegistration": "Wed Apr 21 2021",
+      "timeOfRegistration": "1:26:53 PM",
+      "id": 2
+    },
+    {
+      "userName": "Ahmed",
+      "userSeatNumber": 1,
+      "userId": "21S1R01",
+      "dateOfRegistration": "Wed Apr 21 2021",
+      "timeOfRegistration": "1:27:49 PM",
+      "id": 3
+    },
+    {
+      "userName": "Ahmed",
+      "userSeatNumber": 7,
+      "userId": "21S1R07",
+      "dateOfRegistration": "Wed Apr 21 2021",
+      "timeOfRegistration": "1:28:52 PM",
+      "id": 4
     }
   ]
 }
