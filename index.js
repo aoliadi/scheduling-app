@@ -1,15 +1,19 @@
 "use strict";
 
-
-let endpoint = `http://localhost:8000/centres/`;
+let endpoint = `http://localhost:8000/`;
  
-// console.log( "it works!")
 const overallProcedure = {
 
-    // currentUserDetails: {
-        username: null,
+    centresInfo: {},
+    
+    currentUserDetails: {
+        userName: null,
         userSeatNumber: null,
-    // },
+        hallOfChoice: null,
+        generatedUserId: null,
+        dateOfRegistration: null,
+        timeOfRegistration: null,
+    },
     
     domElements: {
         usernameInput: null,
@@ -25,8 +29,6 @@ const overallProcedure = {
         submit: null
     },
 
-    centresInfo: {},
-
     //starts operation
     initialize() {
         const domObjectKey = this.domElements;
@@ -39,7 +41,7 @@ const overallProcedure = {
         domObjectKey.alertContainer = document.querySelector('#alert__container-js');
         
         //calls for data to be fetched
-        this.fetchData( endpoint );
+        this.fetchData( endpoint + 'centres/' );
     },
 
     //fetch necessary data
@@ -80,10 +82,12 @@ const overallProcedure = {
             this.domElements.submitButton.disabled = false;
         }
 
-        // sets username as the just collected input value
-        this.username = theInputValue;
-    },
+        // return theInputValue
 
+        // this sets the username as the collected input value or null
+        this.currentUserDetails.userName = theInputValue;
+    },
+    
     submission( e ) {
         e.preventDefault();
         let theCentre = this.centresInfo;
@@ -91,14 +95,15 @@ const overallProcedure = {
         if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
             alert('Oooops! No seat available. Try again later');
         } else {
-            this.getRandomNumber( this.centresInfo.numOfAvailableSeat );
+            let randomNumber = this.getRandomNumber( theCentre.numOfAvailableSeat );
+            this.checkIfSeatIsAvailable( randomNumber );
         }
     },
     
     getRandomNumber( range ) {
         let randomNumber = Math.floor( Math.random() * range );
-        
-        this.checkIfSeatIsAvailable( randomNumber );
+
+        return randomNumber;
     },
     
     checkIfSeatIsAvailable( numberGenerated ) {
@@ -118,36 +123,101 @@ const overallProcedure = {
             this.getRandomNumber( this.centresInfo.numOfAvailableSeat );
         }
         
-        this.userSeatNumber = numberGenerated;
+        // if seat is available, before giving seat number, let's store userDetails
+        this.storeUserDetails( {numberGenerated});
+        //then giveSeatNumber to user
         this.giveSeatNumber();
     },
     
     giveSeatNumber() {
-        // debugger;
-        this.sendToDatabase( endpoint, this.centresInfo );
 
-        this.revealSeatNumber();
+        // let data = this.centresInfo;
+        // this.sendToDatabase({
+        //     endpoint,
+        //     type: "centres/2",
+        //     data,
+        //     method: "PUT"
+        // });
+        
+        let data = this.currentUserDetails;
+        this.sendToDatabase({
+            endpoint,
+            type: "userProfiles/",
+            data,
+            method: "POST"
+        });
+        
         // window.location.assign('./another.html');
     },
     
-    // async sendToDatabase( uri, data ) {
-    async sendToDatabase( uri, data ) {
+    storeUserDetails( {numberGenerated: seatNumber} ) {
+        // userName: null,
+        // userSeatNumber: null,
+        // hallOfChoice: null,
+        // generatedUserId: null,
+        // dateOfRegistration: null,
+        // timeOfRegistration: null,
+        
+        let dateFunc = new Date();
+
+        let date = addZeroes( {theNumber: dateFunc.getDate(), desiredLength: 2} ),
+            month = addZeroes( {theNumber: dateFunc.getMonth() + 1, desiredLength: 2} ),
+            year = dateFunc.getFullYear();
+            candidateNumber = addZeroes( {theNumber: this.getRandomNumber( this.centreInfo ), desiredLength: 4} )
+
+
+            year = year.toString().slice(2);
+        
+
+        let currentTime = dateFunc.toLocaleTimeString(),
+            currentDate = dateFunc.toDateString();
+
+        this.currentUserDetails.userSeatNumber = seatNumber;
+        this.currentUserDetails.hallOfChoice = this.centresInfo.hallName;
+        this.currentUserDetails.generatedUserId = "" + date + month + year + this.getRandomNumber( 15 );
+
+        console.log(this.currentUserDetails.generatedUserId)
+        this.currentUserDetails.dateOfRegistration = currentDate;
+        this.currentUserDetails.timeOfRegistration = currentTime;
+
+    },
+
+    addZeroes( {desiredLength, range, theNumber} ) {
+        let randomNumber = theNumber || Math.floor( Math.random() * range ),
+            newNumber;
+            
+        if (range && range.length > desiredLength ) {
+            newNumber = randomNumber;
+        } else if (randomNumber.length !== desiredLength ) {
+            let toAdd = desiredLength - randomNumber.toString().length;
+            let arr = Array(toAdd).fill(0)
+            arr.push(randomNumber);
+            newNumber = arr.join('');
+        } else {
+            newNumber = randomNumber;
+        }
+    
+        return newNumber;
+    },
+    
+    async sendToDatabase({ endpoint: uri, type, method, data }) {
         const otherOptions = {
-            method: "PUT",
+            method,
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
         };
-        // await fetch( uri + 2, otherOptions );
+        // debugger;
+        await fetch( uri + type, otherOptions );
+        // this.revealSeatNumber();
     },
     
     revealSeatNumber() {
-        // window.alert(`Hello, ${this.username}. Your seat number is ${this.userSeatNumber}. Goodluck!`);
         const domObjectKey = this.domElements;
 
-        domObjectKey.alertSeatNumber.textContent = this.userSeatNumber;
-        domObjectKey.alertUsername.innerHTML = this.username;
+        domObjectKey.alertSeatNumber.textContent = this.currentUserDetails.userSeatNumber;
+        domObjectKey.alertUsername.innerHTML = this.currentUserDetails.username;
         domObjectKey.alertContainer.style.display = 'block'
 
         // this.redirectUserToAnotherPage();
@@ -158,11 +228,6 @@ const overallProcedure = {
     },
 }
 
-
-// window.addEventListener( 
-//     'DOMContentLoaded', 
-//     () => overallProcedure.fetchData(endpoint) 
-// );
 window.addEventListener( 
     'DOMContentLoaded', 
     () => overallProcedure.initialize()
