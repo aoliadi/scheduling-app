@@ -25,7 +25,8 @@
 - Handle error from fetch, so the button doesn't just stay disabled if data is fetched. Maybe, show an error or "system down" or "come back later".
 - add an entry to the users resource that holds the date and time a candidate booked a seat.
 - a radio button in the UI with id attached, which will correspond with the different halls.
-- Show user a response in form of a CSS styled alert instead of the JavaScript alert function.
+- Show user a response in form of a CSS styled alert instead of the JavaScript *window.alert* function.
+- Generate a user ID that contains of 8 digits gotten from the year, hall ID and seat number. Year will be 2 digits, seat number is 3 and hall ID will/can be alphanumeric with 3 characters. To be sent to DB also.
 
 ### What is the problem right now? (N.B: Once solved, the list point is deleted and a commit is made)
 - Sending a request to DB to update hall informations after a seat is allocated to a candidate: it keeps creating a new endpoint (i.e. new id; it duplicates)
@@ -33,6 +34,7 @@
 was sending with endpoint as *`http://localhost:8000/centres/`;* instead of *`http://localhost:8000/centres/2`*.
 N.B: 2 because I haven't added the ability to choose a specific hall. It should be ${hall_id} or something.
 
+- Unable to show/reveal seat number to candidate/user through a pop-up because the fetch (PATCH) request reloads the page. I think I have to wait for the fetch request before pop up shows or something. Fingers crossed shaaa.
 
 
 
