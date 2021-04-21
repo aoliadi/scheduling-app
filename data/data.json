@@ -13,11 +13,8 @@
       "hallName": "Science Room 1",
       "hallId": "S1R",
       "capacity": 35,
-      "numOfAvailableSeat": 32,
+      "numOfAvailableSeat": 35,
       "seatsOccupied": [
-        26,
-        1,
-        7
       ]
     },
     {
@@ -37,30 +34,6 @@
       "hallOfChoice": null,
       "generatedUserId": null,
       "dateOfRegistration": null
-    },
-    {
-      "userName": "sd",
-      "userSeatNumber": 26,
-      "userId": "21S1R26",
-      "dateOfRegistration": "Wed Apr 21 2021",
-      "timeOfRegistration": "1:26:53 PM",
-      "id": 2
-    },
-    {
-      "userName": "Ahmed",
-      "userSeatNumber": 1,
-      "userId": "21S1R01",
-      "dateOfRegistration": "Wed Apr 21 2021",
-      "timeOfRegistration": "1:27:49 PM",
-      "id": 3
-    },
-    {
-      "userName": "Ahmed",
-      "userSeatNumber": 7,
-      "userId": "21S1R07",
-      "dateOfRegistration": "Wed Apr 21 2021",
-      "timeOfRegistration": "1:28:52 PM",
-      "id": 4
     }
   ]
 }

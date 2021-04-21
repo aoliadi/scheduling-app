@@ -15,6 +15,7 @@ const overallProcedure = {
     },
     
     domElements: {
+        formElement: null,
         usernameInput: null,
         submitButton: null,
 
@@ -25,7 +26,8 @@ const overallProcedure = {
     
     handlesEvents: {
         username: null,
-        submit: null
+        submit: null,
+        form: null,
     },
 
     //starts operation
@@ -38,6 +40,7 @@ const overallProcedure = {
         domObjectKey.alertSeatNumber = document.querySelector('#alert__username-js');
         domObjectKey.alertUsername = document.querySelector('#alert__seat-number-js');
         domObjectKey.alertContainer = document.querySelector('#alert__container-js');
+        domObjectKey.formElement = document.querySelector('#form__container-js');
         
         //calls for data to be fetched
         this.fetchData( endpoint + 'centres/' );
@@ -52,17 +55,18 @@ const overallProcedure = {
 
         this.centresInfo = data;
         // console.log(this.centresInfo);
-
-        this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton );
+        
+        this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton, this.domElements.formElement );
     },
     
     //attach event listeners
-    attachEvents( input, button ) {
+    attachEvents( input, button, formElem ) {
         const handlerObjectKey = this.handlesEvents;
         
         //add event listeners
         handlerObjectKey.username = input.addEventListener( 'input', (e) => this.checkInputValue(e) );
         handlerObjectKey.submit = button.addEventListener( 'click', (e) => this.submission(e) );
+        handlerObjectKey.form = formElem.addEventListener( 'onsubmit', (e) => this.revealSeatNumber() );
     },
     
     //check value of user's input
@@ -152,7 +156,7 @@ const overallProcedure = {
     storeUserDetails( {numberGenerated: seatNumber} ) {
         let dateFunc = new Date(),
             year = dateFunc.getFullYear(),
-            candidateNumber = addZeroes( {theNumber: seatNumber, desiredLength: this.centresInfo.capacity.toString().length} );
+            candidateNumber = this.addZeroes( {theNumber: seatNumber, desiredLength: this.centresInfo.capacity.toString().length} );
 
         year = year.toString().slice(2);
         let currentTime = dateFunc.toLocaleTimeString(),
@@ -165,7 +169,7 @@ const overallProcedure = {
 
     },
 
-    // just as the name says, it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
+    // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
     addZeroes( {desiredLength, range, theNumber} ) {
         let randomNumber = theNumber || Math.floor( Math.random() * range ),
             newNumber;
@@ -179,7 +183,7 @@ const overallProcedure = {
                 arr = Array(toAdd).fill(0); // creates an array filled with zeroes needed
             arr.push(randomNumber);
             newNumber = arr.join('');
-            debugger;
+            // debugger;
         } else {
             newNumber = randomNumber;
         }
@@ -207,7 +211,9 @@ const overallProcedure = {
         domObjectKey.alertUsername.innerHTML = this.currentUserDetails.username;
         domObjectKey.alertContainer.style.display = 'block'
 
-        this.redirectUserToAnotherPage();
+        // setInterval(() => {
+            this.redirectUserToAnotherPage();
+        // }, 1000);
     },
     
     redirectUserToAnotherPage() {
