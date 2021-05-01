@@ -1,1 +1,5 @@
 node_modules/
+vendor/
+fonts/
+public/
+css/
