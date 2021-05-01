@@ -4,8 +4,8 @@ let endpoint = `http://localhost:8000/`;
  
 const overallProcedure = {
 
-    centresInfo: {},
-    
+    centresInfo: null,
+
     currentUserDetails: {
         userName: null,
         userSeatNumber: null,
@@ -13,8 +13,10 @@ const overallProcedure = {
         dateOfRegistration: null,
         timeOfRegistration: null,
     },
-    
+     
     domElements: {
+        loadingDiv: null,
+        formWrapper: null,
         formElement: null,
         usernameInput: null,
         submitButton: null,
@@ -41,22 +43,33 @@ const overallProcedure = {
         domObjectKey.alertUsername = document.querySelector('#alert__seat-number-js');
         domObjectKey.alertContainer = document.querySelector('#alert__container-js');
         domObjectKey.formElement = document.querySelector('#form__container-js');
-        
+        domObjectKey.formWrapper = document.querySelector('.form__wrapper');
+        domObjectKey.loadingDiv = document.querySelector('#loading-js');
+
         //calls for data to be fetched
-        this.fetchData( endpoint + 'centres/' );
+        this.fetchData( endpoint + 'centres/' )
+            .then( data => {
+                this.centresInfo = data;
+                this.domElements.loadingDiv.classList.add("hidden");
+                this.domElements.formWrapper.classList.remove("hidden");
+            }).catch( err => {
+                window.location.assign("./404.html")
+            });
+
+            this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton, this.domElements.formElement );
     },
 
     //fetch necessary data
-    async fetchData( uri ) {
-
+    fetchData( uri ) {
         //pending further iterations, we use only the second hall - Science Room 1 - for now.
-        let response = await fetch( uri + 2 ),
-                data = await response.json();
+        let response = fetch( uri + 2 ).then(res => {
+            if( res.status !== 200 ) {
+                throw new Error('wrong endpoint')
+            }
+            return res.json();
+        });
 
-        this.centresInfo = data;
-        // console.log(this.centresInfo);
-        
-        this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton, this.domElements.formElement );
+        return response;
     },
     
     //attach event listeners
@@ -135,12 +148,12 @@ const overallProcedure = {
     giveSeatNumber() {
 
         let data = this.centresInfo;
-        this.sendToDatabase({
-            endpoint,
-            type: "centres/2",
-            data,
-            method: "PUT"
-        });
+        // this.sendToDatabase({
+        //     endpoint,
+        //     type: "centres/2",
+        //     data,
+        //     method: "PUT"
+        // });
         
         data = this.currentUserDetails;
         this.sendToDatabase({

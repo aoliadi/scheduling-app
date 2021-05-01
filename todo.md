@@ -19,7 +19,7 @@
     It has two resources: **the centres** and **the candidates**(users). The **centres resource** contains the hall name, its capacity, seats occupied *(the seat number)*  and seats unoccupied *(total number of seats remaining)* while the **users resources** contains the candidate's name, seat number (and to be included, hall).
 - Generate a user ID that contains of 8 digits gotten from the year, hall ID and seat number. Year will be 2 digits, seat number is 3 and hall ID will/can be alphanumeric with 3 characters. To be sent to DB also.
 - add an entry to the users resource that holds the date and time a candidate booked a seat.
-- 
+- Added *loading* to the page if data to be fetched is not ready.
 
 ### Later things.
 - More regex for input
@@ -30,6 +30,7 @@
 - Input box doesn't remember last input.
 - Handle fetch 'PUT' error
 - add input for first and middle name, so username becomes *first-middle*
+- ability to school organization/institution the user is coming from. Once it is chosen, the data for that institution is fetched.
 
 ### What is the problem right now? (N.B: Once solved, the list point is deleted and a commit is made)
 - Sending a request to DB to update hall informations after a seat is allocated to a candidate: it keeps creating a new endpoint (i.e. new id; it duplicates)
@@ -39,7 +40,7 @@ N.B: 2 because I haven't added the ability to choose a specific hall. It should 
 
 - Unable to show/reveal seat number to candidate/user through a pop-up because the fetch (PATCH) request reloads the page. I think I have to wait for the fetch request before pop up shows or something. Fingers crossed shaaa.
 
-
+ 
 
 ## Stack to be used
 - HTML
