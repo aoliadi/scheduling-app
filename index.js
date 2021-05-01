@@ -148,12 +148,12 @@ const overallProcedure = {
     giveSeatNumber() {
 
         let data = this.centresInfo;
-        // this.sendToDatabase({
-        //     endpoint,
-        //     type: "centres/2",
-        //     data,
-        //     method: "PUT"
-        // });
+        this.sendToDatabase({
+            endpoint,
+            type: "centres/2",
+            data,
+            method: "PUT"
+        });
         
         data = this.currentUserDetails;
         this.sendToDatabase({
@@ -181,30 +181,8 @@ const overallProcedure = {
         this.currentUserDetails.timeOfRegistration = currentTime;
 
     },
-
-    // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
-    addZeroes( {desiredLength, range, theNumber} ) {
-        let randomNumber = theNumber || Math.floor( Math.random() * range ),
-            newNumber;
-            
-        // if range is a falsy value (i.e. range is not given)
-        if (range && range.length > desiredLength ) {
-            newNumber = randomNumber;
-        } else if (randomNumber.length !== desiredLength ) {
-            // this checks the number of zeroes to add
-            let toAdd = desiredLength - randomNumber.toString().length,
-                arr = Array(toAdd).fill(0); // creates an array filled with zeroes needed
-            arr.push(randomNumber);
-            newNumber = arr.join('');
-            // debugger;
-        } else {
-            newNumber = randomNumber;
-        }
     
-        return newNumber;
-    },
-    
-    async sendToDatabase({ endpoint: uri, type, method, data }) {
+    sendToDatabase({ endpoint: uri, type, method, data }) {
         const otherOptions = {
             method,
             headers: {
@@ -213,7 +191,7 @@ const overallProcedure = {
             body: JSON.stringify(data)
         };
         // debugger;
-        await fetch( uri + type, otherOptions );
+        fetch( uri + type, otherOptions );
         // this.revealSeatNumber();
     },
     
@@ -223,10 +201,8 @@ const overallProcedure = {
         domObjectKey.alertSeatNumber.textContent = this.currentUserDetails.userSeatNumber;
         domObjectKey.alertUsername.innerHTML = this.currentUserDetails.username;
         domObjectKey.alertContainer.style.display = 'block'
-
-        // setInterval(() => {
-            this.redirectUserToAnotherPage();
-        // }, 1000);
+        
+        this.redirectUserToAnotherPage();
     },
     
     redirectUserToAnotherPage() {
