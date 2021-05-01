@@ -13,7 +13,7 @@
       "hallName": "Science Room 1",
       "hallId": "S1R",
       "capacity": 35,
-      "numOfAvailableSeat": 35,
+      "numOfAvailableSeat": 3,
       "seatsOccupied": [
       ]
     },

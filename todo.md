@@ -20,15 +20,15 @@
 - Generate a user ID that contains of 8 digits gotten from the year, hall ID and seat number. Year will be 2 digits, seat number is 3 and hall ID will/can be alphanumeric with 3 characters. To be sent to DB also.
 - add an entry to the users resource that holds the date and time a candidate booked a seat.
 - Added *loading* to the page if data to be fetched is not ready.
+- Handle error from fetch, so the button doesn't just stay disabled if data is fetched. Maybe, show an error or "system down" or "come back later".
 
 ### Later things.
 - More regex for input
 - Use a DB
-- Handle error from fetch, so the button doesn't just stay disabled if data is fetched. Maybe, show an error or "system down" or "come back later".
+- Handle fetch 'PUT' error
 - a radio button in the UI with id attached, which will correspond with the different halls.
 - Show user a response in form of a CSS styled alert instead of the JavaScript *window.alert* function.
 - Input box doesn't remember last input.
-- Handle fetch 'PUT' error
 - add input for first and middle name, so username becomes *first-middle*
 - ability to school organization/institution the user is coming from. Once it is chosen, the data for that institution is fetched.
 
