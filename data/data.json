@@ -13,8 +13,10 @@
       "hallName": "Science Room 1",
       "hallId": "S1R",
       "capacity": 35,
-      "numOfAvailableSeat": 3,
+      "numOfAvailableSeat": 33,
       "seatsOccupied": [
+        20,
+        11
       ]
     },
     {

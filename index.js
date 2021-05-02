@@ -24,12 +24,14 @@ const overallProcedure = {
         alertContainer: null,
         alertSeatNumber: null,
         alertUsername: null,
+        alertCloseIcon: null,
     },
     
     handlesEvents: {
         username: null,
         submit: null,
         form: null,
+        closeAlert: null,
     },
 
     //starts operation
@@ -39,12 +41,13 @@ const overallProcedure = {
         //query-select the elements from the DOM
         domObjectKey.usernameInput = document.querySelector('#username-js');
         domObjectKey.submitButton = document.querySelector('#btn--submit-js');
-        domObjectKey.alertSeatNumber = document.querySelector('#alert__username-js');
-        domObjectKey.alertUsername = document.querySelector('#alert__seat-number-js');
+        domObjectKey.alertUsername = document.querySelector('#alert__username-js');
+        domObjectKey.alertSeatNumber = document.querySelector('#alert__seat-number-js');
         domObjectKey.alertContainer = document.querySelector('#alert__container-js');
         domObjectKey.formElement = document.querySelector('#form__container-js');
         domObjectKey.formWrapper = document.querySelector('.form__wrapper');
         domObjectKey.loadingDiv = document.querySelector('#loading-js');
+        domObjectKey.alertCloseIcon = document.querySelector('#icon--close-js');
 
         //calls for data to be fetched
         this.fetchData( endpoint + 'centres/' )
@@ -56,7 +59,12 @@ const overallProcedure = {
                 window.location.assign("./404.html")
             });
 
-            this.attachEvents( this.domElements.usernameInput, this.domElements.submitButton, this.domElements.formElement );
+            this.attachEvents( 
+                this.domElements.usernameInput,
+                this.domElements.submitButton,
+                this.domElements.formElement,
+                this.domElements.alertCloseIcon
+            );
     },
 
     //fetch necessary data
@@ -73,13 +81,15 @@ const overallProcedure = {
     },
     
     //attach event listeners
-    attachEvents( input, button, formElem ) {
+    attachEvents( input, button, formElem, closeIcon ) {
         const handlerObjectKey = this.handlesEvents;
         
         //add event listeners
         handlerObjectKey.username = input.addEventListener( 'input', (e) => this.checkInputValue(e) );
         handlerObjectKey.submit = button.addEventListener( 'click', (e) => this.submission(e) );
-        handlerObjectKey.form = formElem.addEventListener( 'onsubmit', (e) => this.revealSeatNumber() );
+        // handlerObjectKey.form = formElem.addEventListener( 'onsubmit', (e) => this.revealSeatNumber() );
+        handlerObjectKey.closeAlert = closeIcon.addEventListener( 'click', (e) => this.redirectUserToAnotherPage() );
+
     },
     
     //check value of user's input
@@ -203,7 +213,7 @@ const overallProcedure = {
     
         return newNumber;
     },
-    
+
     sendToDatabase({ endpoint: uri, type, method, data }) {
         const otherOptions = {
             method,
@@ -212,25 +222,25 @@ const overallProcedure = {
             },
             body: JSON.stringify(data)
         };
-        // debugger;
-        fetch( uri + type, otherOptions );
-        // this.revealSeatNumber();
+        // fetch( uri + type, otherOptions );
+
+        this.revealSeatNumber();
     },
     
     revealSeatNumber() {
         const domObjectKey = this.domElements;
 
         domObjectKey.alertSeatNumber.textContent = this.currentUserDetails.userSeatNumber;
-        domObjectKey.alertUsername.innerHTML = this.currentUserDetails.username;
-        domObjectKey.alertContainer.style.display = 'block'
-        
-        this.redirectUserToAnotherPage();
+        domObjectKey.alertUsername.innerHTML = this.currentUserDetails.userName;
+        domObjectKey.alertContainer.classList.remove("hidden");
+        domObjectKey.formWrapper.classList.add("hidden");
+        // this.redirectUserToAnotherPage();
     },
     
     redirectUserToAnotherPage() {
         window.location.assign('./another.html');
     },
-}
+};
 
 window.addEventListener( 
     'DOMContentLoaded', 

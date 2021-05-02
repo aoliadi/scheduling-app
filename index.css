@@ -22,7 +22,7 @@ body {
     /* border: 2px solid blue; */
 }
 
-body, .alert__container {
+body {
     padding: 1em;
 
     display: flex;
@@ -52,7 +52,8 @@ body, .alert__container {
 
 /* ALERT */
 .alert__container {
-    display: none;
+    padding: 2em;
+
     background-color: aliceblue;
 
     min-height: 50vh;
@@ -64,32 +65,60 @@ body, .alert__container {
     transform: translate( -50%, -50% );
     
     text-align: center;
-    /* border: 2px solid red; */
 }
 
 .alert__content {
     /* border: 2px solid blue; */
     font-size: 2.5em;
-    
+}
+
+.alert__username {
+    color: var(--invalid);
 }
 
 .alert__seat-number {
     display: block;
     font-size: 3em;
     color: var(--invalid);
-
 }
 
-.alert__cancel-btn {
-    /* border: 2px solid red; */
-    padding: .25em;
+/*ALERT CLOSE ICON */
 
-    position: absolute;
-    top: .5em;     right: 1.5em;
-
+.icon--close::after, 
+.icon--close::before {
+    content: "";
+    width: 1.25em;
+    height: 2px;
+    background: var(--invalid);
     cursor: pointer;
+    position: absolute;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .2);
+    transition: 0.5s;
+    /* border: 2px solid red; */
+    position: absolute;
+    right: 2em;    top: 2em;
 }
 
+.icon--close::before {
+    transform: rotate(-45deg);
+}
+
+.icon--close:hover::before {
+    /* transform: rotate(300deg); */
+    box-shadow: none;
+    transform: rotate(-45deg) scale(1.2);
+}
+
+.icon--close::after {
+    transform: rotate(45deg);
+}
+
+.icon--close:hover::after {
+    /* transform: rotate(300deg); */
+    box-shadow: none;
+    transform: rotate(45deg) scale(1.2);
+}
+/* 
 .btn {
     display: flex;
     justify-content: center;
@@ -109,7 +138,6 @@ body, .alert__container {
     -moz-transition: all .4s;
     transition: all .4s;
     position: relative;
-    z-index: 1;
 }
 
 .btn:hover {
@@ -142,9 +170,7 @@ body, .alert__container {
 .btn:hover::before {
     background-color: #403866;
     width: calc(100% + 20px);
-}
-
-
+} */
 
 /* TYPING ANIMATION */
 .anim--typing {
@@ -164,3 +190,4 @@ body, .alert__container {
         width: 100%;
     }
 }
+
