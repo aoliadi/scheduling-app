@@ -181,7 +181,29 @@ const overallProcedure = {
         this.currentUserDetails.timeOfRegistration = currentTime;
 
     },
+
+    // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
+    addZeroes( {desiredLength, range, theNumber} ) {
+        let randomNumber = theNumber || Math.floor( Math.random() * range ),
+            newNumber;
+            
+        // if range is a falsy value (i.e. range is not given)
+        if (range && range.length > desiredLength ) {
+            newNumber = randomNumber;
+        } else if (randomNumber.length !== desiredLength ) {
+            // this checks the number of zeroes to add
+            let toAdd = desiredLength - randomNumber.toString().length,
+                arr = Array(toAdd).fill(0); // creates an array filled with zeroes needed
+            arr.push(randomNumber);
+            newNumber = arr.join('');
+            // debugger;
+        } else {
+            newNumber = randomNumber;
+        }
     
+        return newNumber;
+    },
+
     sendToDatabase({ endpoint: uri, type, method, data }) {
         const otherOptions = {
             method,
