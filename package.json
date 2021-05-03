@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/aoliadi/scheduling-app#readme",
   "dependencies": {
-    "dayjs": "^1.10.4"
+    "dayjs": "^1.10.4",
+    "sweetalert2": "^10.16.7"
   }
 }
