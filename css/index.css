@@ -1,14 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    outline: none;
-    /* border: none; */
-    box-sizing: border-box;
-}
-
-a {
-    display: inline-block;
-}
+@import url(./general/normalize.css);
+@import url(./general/reset.css);
+@import url(./general/font.css);
 
 :root {
     --invalid: red;
@@ -20,9 +12,7 @@ body {
     min-width: 100vw;
     min-height: 100vh;
     /* border: 2px solid blue; */
-}
 
-body {
     padding: 1em;
 
     display: flex;
