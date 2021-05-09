@@ -2,4 +2,5 @@ node_modules/
 vendor/
 fonts/
 public/
-css/
+css/main.css
+css/util.css
