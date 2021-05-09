@@ -1,11 +1,7 @@
 @import url(./general/normalize.css);
+@import url(./general/variables.css);
 @import url(./general/reset.css);
 @import url(./general/font.css);
-
-:root {
-    --invalid: red;
-    --valid: green;
-}
 
 body {
     position: relative;
