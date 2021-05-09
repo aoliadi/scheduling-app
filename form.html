@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/form.css">
+</head>
+<body>
+    <section class="form-section__wrapper">
+        <form action="" class="form__container" autocomplete="off">
+            <header class="form-section__header">
+                <h1 class="form-section__heading">
+                    Welcome!
+                </h1>
+                <p class="form-section__paragraph">
+                    Kindly provide correct information.
+                </p>
+            </header>
+            <ul class="input-list__container">
+                <li class="input-list__item grid">
+                    <div class="">
+                        <label for="first_name">
+                            First Name
+                        </label>
+                        <input type="text" name="first_name" id="first_name" id="first_name-js" class="input input--text first_name">
+                    </div>
+                    <div class="">
+                        <label for="last_name">
+                            Last Name
+                        </label>
+                        <input type="text" name="last_name" id="last_name" id="last_name-js" class="input input--text last_name">
+                    </div>
+                </li>
+                <li class="input-list__item">
+                    <label for="email">
+                        E-mail Address
+                    </label>
+                    <input type="email" name="email" id="email" id="email-js" class="input input--email email">
+                </li>
+                <li class="input-list__item">
+                    <label for="tel">
+                        Telephone
+                    </label>
+                    <input type="tel" pattern="\d*" name="tel" id="tel" id="tel-js" class="input input--tel tel">
+                </li>
+                <!-- <li class="input-list__item grid"> -->
+                    <li class="input-list__item">
+                        <label for="purpose">
+                            What are you here for?
+                        </label>
+                        <select name="" id="purpose" class="input">
+                            <option value="null">What are you here for?</option>
+                            <option value="purpose">Purpose1</option>
+                            <option value="purpose">Purpose2</option>
+                        </select>
+                    </li>
+                    <li class="input-list__item">
+                        <label for="centre">
+                            Centre
+                        </label>
+                        <select name="" id="centre" class="input">
+                            <option value="null">Choose a hall</option>
+                            <option value="Hall">Hall1</option>
+                            <option value="Hall">Hall2</option>
+                        </select>
+                    </li>
+                <!-- </li> -->
+                <li class="input-list__item">
+                    <button type="submit" class="btn btn--form" disabled>
+                        Book a seat
+                    </button>
+                </li>
+            </ul>
+
+        </form>
+        
+    </section>
+</body>
+</html>
