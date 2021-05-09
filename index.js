@@ -56,7 +56,7 @@ const overallProcedure = {
                 this.domElements.loadingDiv.classList.add("hidden");
                 this.domElements.formWrapper.classList.remove("hidden");
             }).catch( err => {
-                window.location.assign("./404.html")
+                // window.location.assign("./404.html")
             });
 
             this.attachEvents( 
@@ -222,7 +222,7 @@ const overallProcedure = {
             },
             body: JSON.stringify(data)
         };
-        // fetch( uri + type, otherOptions );
+        fetch( uri + type, otherOptions );
 
         this.revealSeatNumber();
     },

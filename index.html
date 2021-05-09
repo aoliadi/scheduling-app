@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
     <title>Scheduleet...</title>
     <script defer src="index.js"></script>
-    <script src="./node_modules/dayjs/dayjs.min.js"></script>
-    <script src="./node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script defer src="check.js"></script>
+    <!-- <script src="./node_modules/dayjs/dayjs.min.js"></script> -->
+    <!-- <script src="./node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-firestore.js"></script>
+    <script src="firebase-init.js"></script>
 </head>
 <body>
      
@@ -24,7 +27,7 @@
         </h1>
     </div>
     <section class="form__wrapper hidden">
-        <form action="#" class="form__container" id="form__container-js">
+        <form action="#" method="GET" class="form__container" id="form__container-js" autocomplete="off">
 
             <label for="username" class="label__container label--username" aria-autocomplete="off">
                 Please, what's your name? &nbsp; &nbsp; &nbsp; 
