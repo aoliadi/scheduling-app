@@ -1,4 +1,5 @@
 @import url(./general/normalize.css);
+@import url(./general/variables.css);
 @import url(./general/reset.css);
 @import url(./general/font.css);
 
@@ -26,6 +27,22 @@ label {
     color: #333333;
     line-height: 2.26em;
     /* margin-bottom: 2.26em; */
+}
+
+.compulsory {
+    /* border: 2px solid red; */
+    position: relative;
+}
+
+.compulsory::after {
+    /* border: 2px solid red; */
+    content: "*";
+    font-size: 14px;
+    color: var(--invalid);
+
+    position: absolute;
+    bottom: -5px; 
+    right: -10px;
 }
 
 .form-section__header {
@@ -105,6 +122,8 @@ label {
 }
 
 button[disabled] {
+    background-color: #bbb;
+    color: #e8e8e8;
     opacity: 0.8;
     cursor: not-allowed;
 }
