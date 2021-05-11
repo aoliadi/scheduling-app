@@ -15,56 +15,87 @@ const overallProcedure = {
     },
      
     domElements: {
-        loadingDiv: null,
-        formWrapper: null,
-        formElement: null,
-        usernameInput: null,
+        theForm: null,
+        
+        firstName: null,
+        lastName: null,
+        userName: null,
+        mailAddress: null,
+        telephoneNumber:  null,
+        theEvent: null,
+        theCentre: null,
         submitButton: null,
 
-        alertContainer: null,
-        alertSeatNumber: null,
-        alertUsername: null,
-        alertCloseIcon: null,
+
+        // loadingDiv: null,
+        // formWrapper: null,
+        // usernameInput: null,
+
+        // alertContainer: null,
+        // alertSeatNumber: null,
+        // alertUsername: null,
+        // alertCloseIcon: null,
     },
     
     handlesEvents: {
-        username: null,
-        submit: null,
-        form: null,
-        closeAlert: null,
+        checkFirstName: null,
+        checkLastName: null,
+        checkUserName: null,
+        checkMailAddress: null,
+        submit: null
+        // form: null,
+        // closeAlert: null,
+    },
+
+    afterCheck: {
+        firstName: false,
+        lastName: false,
+        mailAddress: false,
+        userName: false
     },
 
     //starts operation
     initialize() {
+        
+        //calls for data to be fetched
+        this.fetchData( endpoint + 'centres/' )
+        .then( data => {
+            this.centresInfo = data;
+            // this.domElements.loadingDiv.classList.add("hidden");
+            // this.domElements.formWrapper.classList.remove("hidden");
+        }).catch( err => {
+            // window.location.assign("./404.html")
+        });
+
+        // this selects DOM elements
+        this.selectDomElements();
+    },
+
+    selectDomElements() {
         const domObjectKey = this.domElements;
         
         //query-select the elements from the DOM
-        domObjectKey.usernameInput = document.querySelector('#username-js');
-        domObjectKey.submitButton = document.querySelector('#btn--submit-js');
-        domObjectKey.alertUsername = document.querySelector('#alert__username-js');
-        domObjectKey.alertSeatNumber = document.querySelector('#alert__seat-number-js');
-        domObjectKey.alertContainer = document.querySelector('#alert__container-js');
-        domObjectKey.formElement = document.querySelector('#form__container-js');
-        domObjectKey.formWrapper = document.querySelector('.form__wrapper');
-        domObjectKey.loadingDiv = document.querySelector('#loading-js');
-        domObjectKey.alertCloseIcon = document.querySelector('#icon--close-js');
+        domObjectKey.theForm = document.querySelector("#form-js");
+        // theEvent: null,
+        // theCentre: null,
+        this.domElements.firstName = document.querySelector("#first_name-js");
+        domObjectKey.lastName = document.querySelector("#last_name-js");
+        domObjectKey.userName = document.querySelector("#username-js");
+        domObjectKey.mailAddress = document.querySelector("#email-js");
+        domObjectKey.telephoneNumber = document.querySelector("#tel-js");
+        domObjectKey.submitButton = document.querySelector("#btn--submit-js");
 
-        //calls for data to be fetched
-        this.fetchData( endpoint + 'centres/' )
-            .then( data => {
-                this.centresInfo = data;
-                this.domElements.loadingDiv.classList.add("hidden");
-                this.domElements.formWrapper.classList.remove("hidden");
-            }).catch( err => {
-                // window.location.assign("./404.html")
-            });
+        this.attachEvents(
+            domObjectKey
+        );
 
-            this.attachEvents( 
-                this.domElements.usernameInput,
-                this.domElements.submitButton,
-                this.domElements.formElement,
-                this.domElements.alertCloseIcon
-            );
+        // domObjectKey.alertUsername = document.querySelector('#alert__username-js');
+        // domObjectKey.alertSeatNumber = document.querySelector('#alert__seat-number-js');
+        // domObjectKey.alertContainer = document.querySelector('#alert__container-js');
+        // domObjectKey.formElement = document.querySelector('#form__container-js');
+        // domObjectKey.formWrapper = document.querySelector('.form__wrapper');
+        // domObjectKey.loadingDiv = document.querySelector('#loading-js');
+        // domObjectKey.alertCloseIcon = document.querySelector('#icon--close-js');
     },
 
     //fetch necessary data
@@ -81,37 +112,57 @@ const overallProcedure = {
     },
     
     //attach event listeners
-    attachEvents( input, button, formElem, closeIcon ) {
+    attachEvents({ userName, firstName, lastName, mailAddress, submitButton: submit }) {
         const handlerObjectKey = this.handlesEvents;
-        
+
         //add event listeners
-        handlerObjectKey.username = input.addEventListener( 'input', (e) => this.checkInputValue(e) );
-        handlerObjectKey.submit = button.addEventListener( 'click', (e) => this.submission(e) );
+        handlerObjectKey.checkFirstName = firstName.addEventListener( 'input', (e) => this.checkInputValue(e, "firstName"));
+        handlerObjectKey.checkLastName = lastName.addEventListener( 'input', (e) => this.checkInputValue(e, "lastName") );
+        handlerObjectKey.checkMailAddress = mailAddress.addEventListener( 'input', (e) => this.checkInputValue(e, "mailAddress") );
+        handlerObjectKey.checkUserName = userName.addEventListener( 'input', (e) => this.checkInputValue(e, "userName") );
+        handlerObjectKey.submit = submit.addEventListener( 'click', (e) => this.submission(e) );
         // handlerObjectKey.form = formElem.addEventListener( 'onsubmit', (e) => this.revealSeatNumber() );
-        handlerObjectKey.closeAlert = closeIcon.addEventListener( 'click', (e) => this.redirectUserToAnotherPage() );
+        // handlerObjectKey.closeAlert = closeIcon.addEventListener( 'click', (e) => this.redirectUserToAnotherPage() );
 
     },
     
     //check value of user's input
-    checkInputValue( e ) {
+    checkInputValue( e, param ) {
         const theInputBar = e.target;
         let theInputValue = theInputBar.value.trim();
-        // console.log(theInputValue)
-
+        
         if ( theInputValue.length < 2 ) {
             theInputBar.classList.remove('input--valid');
             theInputBar.classList.add('input--invalid');
-            this.domElements.submitButton.disabled = true;
+            this.afterCheck[`${param}`] = false;
         } else {
             theInputBar.classList.remove('input--invalid');
             theInputBar.classList.add('input--valid');
-            this.domElements.submitButton.disabled = false;
+            this.afterCheck[`${param}`] = true;
         }
 
-        // return theInputValue
+        let submitButton = this.anyFalseValue(this.afterCheck);
+        this.enableSubmitButton(submitButton);
 
         // this sets the username as the collected input value or null
-        this.currentUserDetails.userName = theInputValue;
+        // this.currentUserDetails.userName = theInputValue;
+    },
+
+    anyFalseValue( obj ) {
+        let arr = [];
+        for (let [prop, val] of Object.entries(obj)) {
+            arr.push(val)
+        };
+
+        return !arr.includes(false);
+    },
+
+    enableSubmitButton( response ) {
+        if(response) {
+            this.domElements.submitButton.disabled = false;
+        } else {
+            this.domElements.submitButton.disabled = true;
+        }
     },
     
     submission( e ) {
