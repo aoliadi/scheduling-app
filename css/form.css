@@ -1,7 +1,8 @@
-@import url(./general/normalize.css);
+/* @import url(./general/normalize.css); */
 @import url(./general/variables.css);
 @import url(./general/reset.css);
 @import url(./general/font.css);
+@import url(./general/state.css);
 
 body {
     margin: 1.5em;
@@ -30,12 +31,10 @@ label {
 }
 
 .compulsory {
-    /* border: 2px solid red; */
     position: relative;
 }
 
 .compulsory::after {
-    /* border: 2px solid red; */
     content: "*";
     font-size: 14px;
     color: var(--invalid);
@@ -48,8 +47,6 @@ label {
 .form-section__header {
     text-align: center;
     margin-bottom: 3em;
-
-    /* border: 2px solid red; */
 }
 
 .input-list__container {
@@ -65,11 +62,9 @@ label {
     --width-size: 100%;
 
     flex: 1 1 var(--width-size);
-    /* border: 2px solid red; */
 }
 
 .grid {
-    /* border: 2px solid red; */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     /* grid-template-columns: 1fr 1fr; */
@@ -77,13 +72,17 @@ label {
 }
 
 .input {
-    /* border: 2px solid red; */
+    --border-color: #e8e8e8;
+
     font-size: 1.0625em;
     color: #333;
     
-    border-radius: 2px;
     background-color: #fafafa;
-    border: 1px solid #e8e8e8;
+    
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-radius: 2px;
     
     display: block;
     width: 100%;
@@ -96,11 +95,11 @@ label {
 }
 
 .input:hover {
-    border-color: #ccc;
+    --border-color: #ccc;
 }
 
 .input:focus {
-    border-color: #bbb;
+    --border-color: #bbb;
 }
 
 .btn {
