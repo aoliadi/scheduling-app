@@ -148,12 +148,6 @@ const overallProcedure = {
     },
     
     storeUserDetails({label, theInputValue}) {
-        //     userName": "Ahmed",
-        //   "userSeatNumber": 16,
-        //   "userId": "21S1R16",
-        //   "dateOfRegistration": "Thu May 06 2021",
-        //   "timeOfRegistration": "11:19:53 PM",
-        //   "id": 2
         let dateFunc = new Date(),
             year = dateFunc.getFullYear();
 
@@ -162,17 +156,15 @@ const overallProcedure = {
             currentDate = dateFunc.toDateString();
 
         this.currentUserDetails[`${label}`] = theInputValue;
-        // this.currentUserDetails.userSeatNumber = seatNumber;
-        // this.currentUserDetails.userId = "" + year + this.centresInfo.hallId + candidateNumber;
         this.currentUserDetails.dateOfRegistration = currentDate;
         this.currentUserDetails.timeOfRegistration = currentTime;
-        console.log(this.currentUserDetails);
+        // console.log(this.currentUserDetails);
 
     },
 
     anyFalseValue( obj ) {
         let arr = [];
-        for (let [prop, val] of Object.entries(obj)) {
+        for ( let [prop, val] of Object.entries(obj) ) {
             arr.push(val)
         };
 
@@ -224,8 +216,12 @@ const overallProcedure = {
         
         // if seat is available, before giving seat number, let's store userDetails
         
-        let candidateNumber = this.addZeroes( {theNumber: numberGenerated, desiredLength: this.centresInfo.capacity.toString().length} );
+        let candidateNumber = this.addZeroes( {theNumber: numberGenerated, desiredLength: this.centresInfo.capacity.toString().length} ),
+            year = new Date().getFullYear().toString().slice(2);
+
         this.currentUserDetails.userSeatNumber = candidateNumber;
+        this.currentUserDetails.userId = "" + year + this.centresInfo.hallId + candidateNumber;
+
         //then giveSeatNumber to user
         this.giveSeatNumber();
     },
@@ -247,7 +243,8 @@ const overallProcedure = {
             data,
             method: "POST"
         });
-        
+
+        this.redirectUserToAnotherPage();
         // window.location.assign('./another.html');
     },
 
