@@ -17,18 +17,6 @@ body {
     align-items: center;
 }
 
-.hidden {
-    display: none;
-}
-
-.input--invalid {
-    border: 2px solid var(--invalid);
-}
-
-.input--valid {
-    border: 2px solid var(--valid);
-}
-
 .header__heading {
     /* border: 2px solid red; */
     font-size: 3.5em;

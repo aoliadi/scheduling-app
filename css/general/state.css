@@ -1,0 +1,13 @@
+.hidden {
+    display: none;
+}
+
+.input--invalid {
+    --border-color: var(--invalid) !important;
+    border-width: 2px !important;
+}
+
+.input--valid {
+    --border-color: var(--valid) !important;
+    border-width: 2px !important;
+}

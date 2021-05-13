@@ -85,9 +85,7 @@ const overallProcedure = {
         domObjectKey.telephoneNumber = document.querySelector("#tel-js");
         domObjectKey.submitButton = document.querySelector("#btn--submit-js");
 
-        this.attachEvents(
-            domObjectKey
-        );
+        this.attachEvents(domObjectKey);
 
         // domObjectKey.alertUsername = document.querySelector('#alert__username-js');
         // domObjectKey.alertSeatNumber = document.querySelector('#alert__seat-number-js');
@@ -127,18 +125,18 @@ const overallProcedure = {
     },
     
     //check value of user's input
-    checkInputValue( e, param ) {
+    checkInputValue( e, label ) {
         const theInputBar = e.target;
         let theInputValue = theInputBar.value.trim();
         
         if ( theInputValue.length < 2 ) {
             theInputBar.classList.remove('input--valid');
             theInputBar.classList.add('input--invalid');
-            this.afterCheck[`${param}`] = false;
+            this.afterCheck[`${label}`] = false;
         } else {
             theInputBar.classList.remove('input--invalid');
             theInputBar.classList.add('input--valid');
-            this.afterCheck[`${param}`] = true;
+            this.afterCheck[`${label}`] = true;
         }
 
         let submitButton = this.anyFalseValue(this.afterCheck);
@@ -146,6 +144,30 @@ const overallProcedure = {
 
         // this sets the username as the collected input value or null
         // this.currentUserDetails.userName = theInputValue;
+        this.storeUserDetails({label, theInputValue});
+    },
+    
+    storeUserDetails({label, theInputValue}) {
+        //     userName": "Ahmed",
+        //   "userSeatNumber": 16,
+        //   "userId": "21S1R16",
+        //   "dateOfRegistration": "Thu May 06 2021",
+        //   "timeOfRegistration": "11:19:53 PM",
+        //   "id": 2
+        let dateFunc = new Date(),
+            year = dateFunc.getFullYear();
+
+        year = year.toString().slice(2);
+        let currentTime = dateFunc.toLocaleTimeString(),
+            currentDate = dateFunc.toDateString();
+
+        this.currentUserDetails[`${label}`] = theInputValue;
+        // this.currentUserDetails.userSeatNumber = seatNumber;
+        // this.currentUserDetails.userId = "" + year + this.centresInfo.hallId + candidateNumber;
+        this.currentUserDetails.dateOfRegistration = currentDate;
+        this.currentUserDetails.timeOfRegistration = currentTime;
+        console.log(this.currentUserDetails);
+
     },
 
     anyFalseValue( obj ) {
@@ -178,7 +200,7 @@ const overallProcedure = {
     },
     
     getRandomNumber( range ) {
-        let randomNumber = Math.floor( Math.random() * range );
+        let randomNumber = Math.floor(Math.random() * range);
 
         return randomNumber;
     },
@@ -201,7 +223,9 @@ const overallProcedure = {
         }
         
         // if seat is available, before giving seat number, let's store userDetails
-        this.storeUserDetails( {numberGenerated});
+        
+        let candidateNumber = this.addZeroes( {theNumber: numberGenerated, desiredLength: this.centresInfo.capacity.toString().length} );
+        this.currentUserDetails.userSeatNumber = candidateNumber;
         //then giveSeatNumber to user
         this.giveSeatNumber();
     },
@@ -225,22 +249,6 @@ const overallProcedure = {
         });
         
         // window.location.assign('./another.html');
-    },
-    
-    storeUserDetails( {numberGenerated: seatNumber} ) {
-        let dateFunc = new Date(),
-            year = dateFunc.getFullYear(),
-            candidateNumber = this.addZeroes( {theNumber: seatNumber, desiredLength: this.centresInfo.capacity.toString().length} );
-
-        year = year.toString().slice(2);
-        let currentTime = dateFunc.toLocaleTimeString(),
-            currentDate = dateFunc.toDateString();
-
-        this.currentUserDetails.userSeatNumber = seatNumber;
-        this.currentUserDetails.userId = "" + year + this.centresInfo.hallId + candidateNumber;
-        this.currentUserDetails.dateOfRegistration = currentDate;
-        this.currentUserDetails.timeOfRegistration = currentTime;
-
     },
 
     // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
@@ -275,7 +283,7 @@ const overallProcedure = {
         };
         fetch( uri + type, otherOptions );
 
-        this.revealSeatNumber();
+        // this.revealSeatNumber();
     },
     
     revealSeatNumber() {
