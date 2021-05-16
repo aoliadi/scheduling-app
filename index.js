@@ -6,6 +6,8 @@ const overallProcedure = {
 
     centresInfo: null,
 
+    eventsOnDatabase: [],
+
     currentUserDetails: {
         userName: null,
         userSeatNumber: null,
@@ -42,6 +44,7 @@ const overallProcedure = {
         checkLastName: null,
         checkUserName: null,
         checkMailAddress: null,
+        checkCentre: null,
         submit: null
         // form: null,
         // closeAlert: null,
@@ -54,21 +57,33 @@ const overallProcedure = {
         userName: false
     },
 
+    createOptions(arr) {
+        let allTheOptions = "";
+        arr.forEach((param, index) => {
+            allTheOptions += `<option value="${index}" data-id="${index}">${param}</option>`;
+        })
+        return allTheOptions;
+    },
+
     //starts operation
     initialize() {
+        // this selects DOM elements
+        this.selectDomElements();
+        let eventOptions = this.domElements.theEvent;
         
         //calls for data to be fetched
-        this.fetchData( endpoint + 'centres/' )
+        // this.fetchData( endpoint + 'centres/' )
+        this.fetchData( endpoint + 'events/' )
         .then( data => {
-            this.centresInfo = data;
+            // this.centresInfo = data;
+            this.eventsOnDatabase = [...data];
+            eventOptions.innerHTML = this.createOptions(this.eventsOnDatabase);
             // this.domElements.loadingDiv.classList.add("hidden");
             // this.domElements.formWrapper.classList.remove("hidden");
         }).catch( err => {
             // window.location.assign("./404.html")
         });
 
-        // this selects DOM elements
-        this.selectDomElements();
     },
 
     selectDomElements() {
@@ -78,13 +93,14 @@ const overallProcedure = {
         domObjectKey.theForm = document.querySelector("#form-js");
         // theEvent: null,
         // theCentre: null,
-        this.domElements.firstName = document.querySelector("#first_name-js");
+        domObjectKey.firstName = document.querySelector("#first_name-js");
         domObjectKey.lastName = document.querySelector("#last_name-js");
         domObjectKey.userName = document.querySelector("#username-js");
         domObjectKey.mailAddress = document.querySelector("#email-js");
         domObjectKey.telephoneNumber = document.querySelector("#tel-js");
+        domObjectKey.theEvent = document.querySelector("select#purpose-js");
+        domObjectKey.theCentre = document.querySelector("select#centre-js");
         domObjectKey.submitButton = document.querySelector("#btn--submit-js");
-
         this.attachEvents(domObjectKey);
 
         // domObjectKey.alertUsername = document.querySelector('#alert__username-js');
@@ -99,7 +115,26 @@ const overallProcedure = {
     //fetch necessary data
     fetchData( uri ) {
         //pending further iterations, we use only the second hall - Science Room 1 - for now.
-        let response = fetch( uri + 2 ).then(res => {
+        // let response = fetch( uri + 2 ).then(res => {
+        //     if( res.status !== 200 ) {
+        //         throw new Error('wrong endpoint')
+        //     }
+        //     return res.json();
+        // });
+
+        // return response;
+
+        // fetch("data/data.json")
+        // .then(res => res.json())
+        // .then(data => {
+        //     [events] = [data.events];
+        //     let html = "";
+        //     events.forEach((anEvent, index) => {
+        //         html += `<option value="${index}" data-id="${index++}">${anEvent}</option>`;
+        //         choice.innerHTML = html
+        //     })
+        // })
+        let response = fetch( uri ).then(res => {
             if( res.status !== 200 ) {
                 throw new Error('wrong endpoint')
             }
@@ -110,17 +145,19 @@ const overallProcedure = {
     },
     
     //attach event listeners
-    attachEvents({ userName, firstName, lastName, mailAddress, submitButton: submit }) {
+    attachEvents({ userName, firstName, lastName, mailAddress, submitButton: submit, theEvent, theCentre }) {
         const handlerObjectKey = this.handlesEvents;
 
         //add event listeners
-        handlerObjectKey.checkFirstName = firstName.addEventListener( 'input', (e) => this.checkInputValue(e, "firstName"));
-        handlerObjectKey.checkLastName = lastName.addEventListener( 'input', (e) => this.checkInputValue(e, "lastName") );
-        handlerObjectKey.checkMailAddress = mailAddress.addEventListener( 'input', (e) => this.checkInputValue(e, "mailAddress") );
-        handlerObjectKey.checkUserName = userName.addEventListener( 'input', (e) => this.checkInputValue(e, "userName") );
-        handlerObjectKey.submit = submit.addEventListener( 'click', (e) => this.submission(e) );
-        // handlerObjectKey.form = formElem.addEventListener( 'onsubmit', (e) => this.revealSeatNumber() );
-        // handlerObjectKey.closeAlert = closeIcon.addEventListener( 'click', (e) => this.redirectUserToAnotherPage() );
+        handlerObjectKey.checkFirstName = firstName.addEventListener( "input", (e) => this.checkInputValue(e, "firstName"));
+        handlerObjectKey.checkLastName = lastName.addEventListener( "input", (e) => this.checkInputValue(e, "lastName") );
+        handlerObjectKey.checkMailAddress = mailAddress.addEventListener( "input", (e) => this.checkInputValue(e, "mailAddress") );
+        handlerObjectKey.checkUserName = userName.addEventListener( "input", (e) => this.checkInputValue(e, "userName") );
+        handlerObjectKey.checkEvent = theEvent.addEventListener( "change", (e) => this.getChoiceId(e) );
+        // handlerObjectKey.checkCentre = theCentre.addEventListener( "click", (e) => this.submission(e) );
+        handlerObjectKey.submit = submit.addEventListener( "click", (e) => this.submission(e) );
+        // handlerObjectKey.form = formElem.addEventListener( "onsubmit", (e) => this.revealSeatNumber() );
+        // handlerObjectKey.closeAlert = closeIcon.addEventListener( "click", (e) => this.redirectUserToAnotherPage() );
 
     },
     
@@ -145,6 +182,23 @@ const overallProcedure = {
         // this sets the username as the collected input value or null
         // this.currentUserDetails.userName = theInputValue;
         this.storeUserDetails({label, theInputValue});
+    },
+
+    getChoiceId(e) {
+        this.fetchData( endpoint + 'centres?q=capacity:>=100')
+        .then( data => {
+            console.log(data);
+            // this.centresInfo = data;
+            // this.eventsOnDatabase = [...data];
+            // eventOptions.innerHTML = this.createOptions(this.eventsOnDatabase);
+            // this.domElements.loadingDiv.classList.add("hidden");
+            // this.domElements.formWrapper.classList.remove("hidden");
+        }).catch( err => {
+            // window.location.assign("./404.html")
+        });
+        // console.log(e.target.options[e.target.value].dataset.id);
+
+        // return e.target.value;
     },
     
     storeUserDetails({label, theInputValue}) {

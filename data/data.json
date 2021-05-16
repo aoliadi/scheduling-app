@@ -1,4 +1,20 @@
 {
+  "events": [
+    "CSC 204",
+    "Engineering Summit",
+    "24th Convocation",
+    "18/19 Matriculation",
+    "ENT202",
+    "SDG Conference",
+    "FOSIC 2020",
+    "UCL Final"
+  ],
+  "eventHalls": [
+    {
+      "id": 1,
+      "halls": [5, 3]
+    }
+  ],
   "centres": [
     {
       "id": 1,
@@ -13,10 +29,8 @@
       "hallName": "Science Room 1",
       "hallId": "S1R",
       "capacity": 35,
-      "numOfAvailableSeat": 33,
+      "numOfAvailableSeat": 35,
       "seatsOccupied": [
-        20,
-        11
       ]
     },
     {
@@ -25,6 +39,38 @@
       "hallId": "S2R",
       "capacity": 50,
       "numOfAvailableSeat": 50,
+      "seatsOccupied": []
+    },
+    {
+      "id": 4,
+      "hallName": "Eden Room",
+      "hallId": "EDR",
+      "capacity": 500,
+      "numOfAvailableSeat": 500,
+      "seatsOccupied": []
+    },
+    {
+      "id": 5,
+      "hallName": "Kimmel Center",
+      "hallId": "KMC",
+      "capacity": 150,
+      "numOfAvailableSeat": 150,
+      "seatsOccupied": []
+    },
+    {
+      "id": 6,
+      "hallName": "Suntory Hall",
+      "hallId": "SUN",
+      "capacity": 1500,
+      "numOfAvailableSeat": 1500,
+      "seatsOccupied": []
+    },
+    {
+      "id": 7,
+      "hallName": "Old Town",
+      "hallId": "OLD",
+      "capacity": 2500,
+      "numOfAvailableSeat": 3500,
       "seatsOccupied": []
     }
   ],
