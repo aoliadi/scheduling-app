@@ -1,4 +1,4 @@
-// "use strict";
+"use strict";
 
 // let choice = document.querySelector("select#purpose-js");
 // let hall = document.querySelector("select#centre-js"),
@@ -45,3 +45,14 @@
 //   hall.innerHTML = use;
 //   // console.log(use);
 // })
+
+// sort based on capacity in descending order
+// fetch("http://localhost:8000/centres?_sort=hallName&_order=desc")
+// fetch("http://localhost:8000/centres")
+// .then(res => res.json())
+// .then(data => {
+//     console.log(data);
+//     let halls = [1, 5];
+//     let res = data.filter(item => halls.includes(item.id));
+//     console.log(res);
+// });

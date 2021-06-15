@@ -4,6 +4,8 @@ let endpoint = `http://localhost:8000/`;
  
 const overallProcedure = {
 
+    centres: null,
+
     centresInfo: null,
 
     eventsOnDatabase: [],
@@ -44,6 +46,7 @@ const overallProcedure = {
         checkLastName: null,
         checkUserName: null,
         checkMailAddress: null,
+        checkEvent: null,
         checkCentre: null,
         submit: null
         // form: null,
@@ -54,14 +57,23 @@ const overallProcedure = {
         firstName: false,
         lastName: false,
         mailAddress: false,
-        userName: false
+        userName: false,
+        centre: false
     },
 
-    createOptions(arr) {
-        let allTheOptions = "";
+    changeAfterCheckValueOf(e, label) {
+        let value = (!e.target.value || e.target.value == "null") ? false : true;
+        this.afterCheck[`${label}`] = value;
+        // this.storeCentreInfo(this.centres, e.target.value);
+        this.readyForSubmission();
+    },
+
+    createOptions(arr, defaultChoice) {
+        let allTheOptions = (arr.length > 1) ? `<option value="null" data-id="null">${defaultChoice}</option>` : null;
         arr.forEach((param, index) => {
+            index += 1;
             allTheOptions += `<option value="${index}" data-id="${index}">${param}</option>`;
-        })
+        });
         return allTheOptions;
     },
 
@@ -69,15 +81,13 @@ const overallProcedure = {
     initialize() {
         // this selects DOM elements
         this.selectDomElements();
-        let eventOptions = this.domElements.theEvent;
         
         //calls for data to be fetched
-        // this.fetchData( endpoint + 'centres/' )
         this.fetchData( endpoint + 'events/' )
         .then( data => {
             // this.centresInfo = data;
             this.eventsOnDatabase = [...data];
-            eventOptions.innerHTML = this.createOptions(this.eventsOnDatabase);
+            this.domElements.theEvent.innerHTML = this.createOptions(this.eventsOnDatabase, "Choose an event");
             // this.domElements.loadingDiv.classList.add("hidden");
             // this.domElements.formWrapper.classList.remove("hidden");
         }).catch( err => {
@@ -91,8 +101,6 @@ const overallProcedure = {
         
         //query-select the elements from the DOM
         domObjectKey.theForm = document.querySelector("#form-js");
-        // theEvent: null,
-        // theCentre: null,
         domObjectKey.firstName = document.querySelector("#first_name-js");
         domObjectKey.lastName = document.querySelector("#last_name-js");
         domObjectKey.userName = document.querySelector("#username-js");
@@ -153,12 +161,11 @@ const overallProcedure = {
         handlerObjectKey.checkLastName = lastName.addEventListener( "input", (e) => this.checkInputValue(e, "lastName") );
         handlerObjectKey.checkMailAddress = mailAddress.addEventListener( "input", (e) => this.checkInputValue(e, "mailAddress") );
         handlerObjectKey.checkUserName = userName.addEventListener( "input", (e) => this.checkInputValue(e, "userName") );
-        handlerObjectKey.checkEvent = theEvent.addEventListener( "change", (e) => this.getChoiceId(e) );
-        // handlerObjectKey.checkCentre = theCentre.addEventListener( "click", (e) => this.submission(e) );
+        handlerObjectKey.checkEvent = theEvent.addEventListener( "change", (e) => this.availableCentres(e) );
+        handlerObjectKey.checkCentre = theCentre.addEventListener( "change", (e) => this.changeAfterCheckValueOf(e, "centre") );
         handlerObjectKey.submit = submit.addEventListener( "click", (e) => this.submission(e) );
         // handlerObjectKey.form = formElem.addEventListener( "onsubmit", (e) => this.revealSeatNumber() );
         // handlerObjectKey.closeAlert = closeIcon.addEventListener( "click", (e) => this.redirectUserToAnotherPage() );
-
     },
     
     //check value of user's input
@@ -174,31 +181,63 @@ const overallProcedure = {
             theInputBar.classList.remove('input--invalid');
             theInputBar.classList.add('input--valid');
             this.afterCheck[`${label}`] = true;
-        }
+        };
 
-        let submitButton = this.anyFalseValue(this.afterCheck);
-        this.enableSubmitButton(submitButton);
+        this.readyForSubmission();
 
         // this sets the username as the collected input value or null
         // this.currentUserDetails.userName = theInputValue;
         this.storeUserDetails({label, theInputValue});
     },
 
-    getChoiceId(e) {
-        this.fetchData( endpoint + 'centres?q=capacity:>=100')
-        .then( data => {
-            console.log(data);
-            // this.centresInfo = data;
-            // this.eventsOnDatabase = [...data];
-            // eventOptions.innerHTML = this.createOptions(this.eventsOnDatabase);
-            // this.domElements.loadingDiv.classList.add("hidden");
-            // this.domElements.formWrapper.classList.remove("hidden");
-        }).catch( err => {
-            // window.location.assign("./404.html")
-        });
-        // console.log(e.target.options[e.target.value].dataset.id);
+    availableCentres(e) {
+        let id = e.target.value,
+            halls =  null;
 
-        // return e.target.value;
+        if(id === "null") {
+            this.domElements.theCentre.innerHTML = `<option value="null">Choose an hall</option>`;
+            this.domElements.theCentre.disabled = true;
+            this.afterCheck["centre"] = false;
+            this.readyForSubmission();
+        } else {
+            this.fetchData( endpoint + "eventHalls/" + id)
+            .then( data => {
+                halls = [...data.halls];
+                return this.fetchData( endpoint + "centres/")
+            })
+            .then(data => {
+                // store all the centres
+                this.centres = [...data];
+
+                // the 1st filter function checks for centres hallId that matches any of the "halls" array-item and creates an array of the centres
+                // the 2nd filter function removes any of the hall where there's no vacant seat for candidates 
+                // the map function then extracts only the hallName of the centres available for the event
+                let result = data.filter(item => halls.includes(item.id))
+                                .filter(centre => centre.numOfAvailableSeat !== 0)
+                                .map(item => item.hallName);
+                if(result.length > 1) {
+                    this.domElements.theCentre.disabled = false;
+                    this.afterCheck["centre"] = false;
+                    this.readyForSubmission();
+                } else {
+                    this.domElements.theCentre.disabled = true;
+                    this.storeCentreInfo(data, result[0]);
+                    this.afterCheck["centre"] = true;
+                    this.readyForSubmission();
+                }
+                this.domElements.theCentre.innerHTML = this.createOptions(result, "Choose an hall");
+            })
+            .catch( err => {
+                // window.location.assign("./404.html")
+            });
+        }
+    },
+
+    storeCentreInfo(centres, centre) {
+        let result = centres.filter(item => centre.includes(item.hallName));
+        // console.log(centres, centre, result);
+        // console.log(result);
+        this.centresInfo = result[0];
     },
     
     storeUserDetails({label, theInputValue}) {
@@ -213,7 +252,6 @@ const overallProcedure = {
         this.currentUserDetails.dateOfRegistration = currentDate;
         this.currentUserDetails.timeOfRegistration = currentTime;
         // console.log(this.currentUserDetails);
-
     },
 
     anyFalseValue( obj ) {
@@ -223,6 +261,11 @@ const overallProcedure = {
         };
 
         return !arr.includes(false);
+    },
+
+    readyForSubmission() {
+        // this checks if there's any false prop value in the afterCheck object. If there isn't, it enables the submit button.
+        this.enableSubmitButton(this.anyFalseValue(this.afterCheck));
     },
 
     enableSubmitButton( response ) {
@@ -235,14 +278,15 @@ const overallProcedure = {
     
     submission( e ) {
         e.preventDefault();
-        let theCentre = this.centresInfo;
+        console.log("ready for submission");
+        // let theCentre = this.centresInfo;
         
-        if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
-            alert('Oooops! No seat available. Try again later');
-        } else {
-            let randomNumber = this.getRandomNumber( theCentre.numOfAvailableSeat );
-            this.checkIfSeatIsAvailable( randomNumber );
-        }
+        // if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
+        //     alert('Oooops! No seat available. Try again later');
+        // } else {
+        //     let randomNumber = this.getRandomNumber( theCentre.numOfAvailableSeat );
+        //     this.checkIfSeatIsAvailable( randomNumber );
+        // }
     },
     
     getRandomNumber( range ) {
