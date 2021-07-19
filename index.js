@@ -6,7 +6,7 @@ const overallProcedure = {
 
     centres: null,
 
-    centresInfo: null,
+    centreInfo: null,
 
     eventsOnDatabase: [],
 
@@ -46,6 +46,7 @@ const overallProcedure = {
         checkLastName: null,
         checkUserName: null,
         checkMailAddress: null,
+        checkTelephone: null,
         checkEvent: null,
         checkCentre: null,
         submit: null
@@ -58,23 +59,46 @@ const overallProcedure = {
         lastName: false,
         mailAddress: false,
         userName: false,
+        telephone: false,
         centre: false
     },
 
     changeAfterCheckValueOf(e, label) {
-        let value = (!e.target.value || e.target.value == "null") ? false : true;
+        //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
+        // let value = (!e.target.value || e.target.value == "null") ? false : true; //I've forgotten the usefulness of !e.target.value
+        let value = (e.target.value == "null") ? false : true;
         this.afterCheck[`${label}`] = value;
-        // this.storeCentreInfo(this.centres, e.target.value);
+        console.log(e.target.dataset.hallid);
         this.readyForSubmission();
     },
 
-    createOptions(arr, defaultChoice) {
+    createOptions(arr, purpose, defaultChoice) {
+        //If items in the array (i.e. arr) is more than one, create a default option before accessing array contents; if not, set it to null.
+        // console.log(arr);
         let allTheOptions = (arr.length > 1) ? `<option value="null" data-id="null">${defaultChoice}</option>` : null;
         arr.forEach((param, index) => {
+            //if param doesn't have an hallName property value, use param as listTitle; else, use param.hallName.
             index += 1;
-            allTheOptions += `<option value="${index}" data-id="${index}">${param}</option>`;
+            if(purpose === "theEvents") {
+                allTheOptions += `<option value="${index}" data-id="${index}">${param}</option>`;
+            } else if(purpose === "theCentres") {
+                allTheOptions += `<option value="${index}" data-id="${index}" data-hallId="${param.hallId}">${param.hallName}</option>`;
+            }
+            // let listTitle = (!param.hallName) ? param : param.hallName;
         });
+        // allTheOptions.addEventListener("click", (e) => console.log(e.target));
         return allTheOptions;
+    },
+
+    validClassName(action, targetElement) {
+        // console.log(action, targetElement);
+        if(action == "add") {
+            targetElement.classList.remove('input--invalid');
+            targetElement.classList.add('input--valid');
+        } else {
+            targetElement.classList.remove('input--valid');
+            targetElement.classList.add('input--invalid');
+        }
     },
 
     //starts operation
@@ -87,7 +111,7 @@ const overallProcedure = {
         .then( data => {
             // this.centresInfo = data;
             this.eventsOnDatabase = [...data];
-            this.domElements.theEvent.innerHTML = this.createOptions(this.eventsOnDatabase, "Choose an event");
+            this.domElements.theEvent.innerHTML = this.createOptions(this.eventsOnDatabase, "theEvents", "Choose an event");
             // this.domElements.loadingDiv.classList.add("hidden");
             // this.domElements.formWrapper.classList.remove("hidden");
         }).catch( err => {
@@ -153,40 +177,55 @@ const overallProcedure = {
     },
     
     //attach event listeners
-    attachEvents({ userName, firstName, lastName, mailAddress, submitButton: submit, theEvent, theCentre }) {
+    attachEvents({ userName, firstName, lastName, mailAddress, telephoneNumber, submitButton, theEvent, theCentre }) {
         const handlerObjectKey = this.handlesEvents;
 
         //add event listeners
-        handlerObjectKey.checkFirstName = firstName.addEventListener( "input", (e) => this.checkInputValue(e, "firstName"));
-        handlerObjectKey.checkLastName = lastName.addEventListener( "input", (e) => this.checkInputValue(e, "lastName") );
-        handlerObjectKey.checkMailAddress = mailAddress.addEventListener( "input", (e) => this.checkInputValue(e, "mailAddress") );
-        handlerObjectKey.checkUserName = userName.addEventListener( "input", (e) => this.checkInputValue(e, "userName") );
+        handlerObjectKey.checkFirstName = firstName.addEventListener( "input", (e) => this.validateInput(e, "firstName"));
+        handlerObjectKey.checkLastName = lastName.addEventListener( "input", (e) => this.validateInput(e, "lastName") );
+        handlerObjectKey.checkMailAddress = mailAddress.addEventListener( "input", (e) => this.validateInput(e, "mailAddress") );
+        handlerObjectKey.checkUserName = userName.addEventListener( "input", (e) => this.validateInput(e, "userName") );
+        handlerObjectKey.checkTelephone = telephoneNumber.addEventListener( "input", (e) => this.validateInput(e, "telephone") );
         handlerObjectKey.checkEvent = theEvent.addEventListener( "change", (e) => this.availableCentres(e) );
         handlerObjectKey.checkCentre = theCentre.addEventListener( "change", (e) => this.changeAfterCheckValueOf(e, "centre") );
-        handlerObjectKey.submit = submit.addEventListener( "click", (e) => this.submission(e) );
+        handlerObjectKey.submit = submitButton.addEventListener( "click", (e) => this.submission(e) );
         // handlerObjectKey.form = formElem.addEventListener( "onsubmit", (e) => this.revealSeatNumber() );
         // handlerObjectKey.closeAlert = closeIcon.addEventListener( "click", (e) => this.redirectUserToAnotherPage() );
     },
     
-    //check value of user's input
-    checkInputValue( e, label ) {
-        const theInputBar = e.target;
-        let theInputValue = theInputBar.value.trim();
+    validateInput(e, label) {
+        let regex, theResponse, theAction,
+            theInputValue = e.target.value.trim();
         
-        if ( theInputValue.length < 2 ) {
-            theInputBar.classList.remove('input--valid');
-            theInputBar.classList.add('input--invalid');
-            this.afterCheck[`${label}`] = false;
-        } else {
-            theInputBar.classList.remove('input--invalid');
-            theInputBar.classList.add('input--valid');
-            this.afterCheck[`${label}`] = true;
+        switch (label) {
+            case "firstName":
+            case "lastName":
+                regex =  /^[a-zA-Z]{2,15}$/;
+                break;
+                
+            case "telephone":
+                regex = /1?[\s-]?\(?(\d{3})\)?[\s-]?\d{3}[\s-]?\d{4}/;
+                break;
+            
+            case "userName":
+                regex =  /^[a-z0-9A-Z]{2,10}$/;
+                break;
+
+            case "mailAddress":
+                regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                break;
+            
+            default:
+                console.log("nothing!");
+                break;
         };
 
+        theResponse = regex.test(theInputValue);
+        theAction = (theResponse) ? "add" : "remove";
+        
+        this.afterCheck[`${label}`] = theResponse;
+        this.validClassName(theAction, e.target);
         this.readyForSubmission();
-
-        // this sets the username as the collected input value or null
-        // this.currentUserDetails.userName = theInputValue;
         this.storeUserDetails({label, theInputValue});
     },
 
@@ -214,18 +253,19 @@ const overallProcedure = {
                 // the map function then extracts only the hallName of the centres available for the event
                 let result = data.filter(item => halls.includes(item.id))
                                 .filter(centre => centre.numOfAvailableSeat !== 0)
-                                .map(item => item.hallName);
+                                // .map(item => item.hallName);
+
                 if(result.length > 1) {
                     this.domElements.theCentre.disabled = false;
                     this.afterCheck["centre"] = false;
                     this.readyForSubmission();
                 } else {
                     this.domElements.theCentre.disabled = true;
-                    this.storeCentreInfo(data, result[0]);
                     this.afterCheck["centre"] = true;
                     this.readyForSubmission();
                 }
-                this.domElements.theCentre.innerHTML = this.createOptions(result, "Choose an hall");
+
+                this.domElements.theCentre.innerHTML = this.createOptions(result, "theCentres", "Choose an hall");
             })
             .catch( err => {
                 // window.location.assign("./404.html")
@@ -234,8 +274,9 @@ const overallProcedure = {
     },
 
     storeCentreInfo(centres, centre) {
+        console.log(centres, centre);
         let result = centres.filter(item => centre.includes(item.hallName));
-        // console.log(centres, centre, result);
+        // console.log("centres:", centres, "centre:", centre, "result:", result);
         // console.log(result);
         this.centresInfo = result[0];
     },
@@ -260,7 +301,7 @@ const overallProcedure = {
             arr.push(val)
         };
 
-        return !arr.includes(false);
+        return arr.includes(false);
     },
 
     readyForSubmission() {
@@ -269,7 +310,8 @@ const overallProcedure = {
     },
 
     enableSubmitButton( response ) {
-        if(response) {
+        // response = false;
+        if(!response) {
             this.domElements.submitButton.disabled = false;
         } else {
             this.domElements.submitButton.disabled = true;
