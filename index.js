@@ -11,11 +11,11 @@ const overallProcedure = {
     eventsOnDatabase: [],
 
     currentUserDetails: {
-        userName: null,
-        userSeatNumber: null,
-        userId: null,
-        dateOfRegistration: null,
-        timeOfRegistration: null,
+        // userName: null,
+        // userSeatNumber: null,
+        // userId: null,
+        // dateOfRegistration: null,
+        // timeOfRegistration: null,
     },
      
     domElements: {
@@ -66,25 +66,34 @@ const overallProcedure = {
     changeAfterCheckValueOf(e, label) {
         //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
         // let value = (!e.target.value || e.target.value == "null") ? false : true; //I've forgotten the usefulness of !e.target.value
-        let value = (e.target.value == "null") ? false : true;
+        let value = (e.target.value == "null") ? false : true,
+            hallId = e.target[e.target.value].dataset.hallid;
+
         this.afterCheck[`${label}`] = value;
-        console.log(e.target.dataset.hallid);
+        
+        this.storeCentreInfo(this.centres, hallId )
         this.readyForSubmission();
     },
 
     createOptions(arr, purpose, defaultChoice) {
         //If items in the array (i.e. arr) is more than one, create a default option before accessing array contents; if not, set it to null.
-        // console.log(arr);
         let allTheOptions = (arr.length > 1) ? `<option value="null" data-id="null">${defaultChoice}</option>` : null;
         arr.forEach((param, index) => {
             //if param doesn't have an hallName property value, use param as listTitle; else, use param.hallName.
             index += 1;
-            if(purpose === "theEvents") {
-                allTheOptions += `<option value="${index}" data-id="${index}">${param}</option>`;
-            } else if(purpose === "theCentres") {
-                allTheOptions += `<option value="${index}" data-id="${index}" data-hallId="${param.hallId}">${param.hallName}</option>`;
+
+            switch (purpose) {
+                case "theEvents":
+                    allTheOptions += `<option value="${index}" data-id="${index}">${param}</option>`;
+                    break;
+
+                case "theCentres":
+                    allTheOptions += `<option value="${index}" data-id="${index}" data-hallId="${param.hallId}">${param.hallName}</option>`;
+                    break;
+            
+                default:
+                    break;
             }
-            // let listTitle = (!param.hallName) ? param : param.hallName;
         });
         // allTheOptions.addEventListener("click", (e) => console.log(e.target));
         return allTheOptions;
@@ -194,7 +203,9 @@ const overallProcedure = {
     },
     
     validateInput(e, label) {
-        let regex, theResponse, theAction,
+        let regex,
+            theResponse,
+            theAction,
             theInputValue = e.target.value.trim();
         
         switch (label) {
@@ -262,6 +273,7 @@ const overallProcedure = {
                 } else {
                     this.domElements.theCentre.disabled = true;
                     this.afterCheck["centre"] = true;
+                    this.storeCentreInfo(this.centres, result[0].hallId);
                     this.readyForSubmission();
                 }
 
@@ -274,11 +286,8 @@ const overallProcedure = {
     },
 
     storeCentreInfo(centres, centre) {
-        console.log(centres, centre);
-        let result = centres.filter(item => centre.includes(item.hallName));
-        // console.log("centres:", centres, "centre:", centre, "result:", result);
-        // console.log(result);
-        this.centresInfo = result[0];
+        let result = centres.filter(hall => centre.includes(hall.hallId));
+        this.centreInfo = result[0];
     },
     
     storeUserDetails({label, theInputValue}) {

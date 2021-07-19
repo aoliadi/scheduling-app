@@ -4,7 +4,7 @@
     "Engineering Summit",
     "24th Convocation",
     "21st Matriculation",
-    "ENT 202",
+    "GNS 101",
     "SDG Conference",
     "FOSIC 2020",
     "UCL Final"
@@ -24,7 +24,7 @@
       "halls": [8]
     }, {
       "id": 5,
-      "halls": [1, 5]
+      "halls": [1, 4, 5, 7]
     }, {
       "id": 6,
       "halls": [4]
