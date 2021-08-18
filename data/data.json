@@ -12,28 +12,55 @@
   "eventHalls": [
     {
       "id": 1,
-      "halls": [2, 3]
-    }, {
+      "halls": [
+        2,
+        3
+      ]
+    },
+    {
       "id": 2,
-      "halls": [6]
-    }, {
+      "halls": [
+        6
+      ]
+    },
+    {
       "id": 3,
-      "halls": [7]
-    }, {
+      "halls": [
+        7
+      ]
+    },
+    {
       "id": 4,
-      "halls": [8]
-    }, {
+      "halls": [
+        8
+      ]
+    },
+    {
       "id": 5,
-      "halls": [1, 4, 5, 7]
-    }, {
+      "halls": [
+        1,
+        4,
+        5,
+        7
+      ]
+    },
+    {
       "id": 6,
-      "halls": [4]
-    }, {
+      "halls": [
+        4
+      ]
+    },
+    {
       "id": 7,
-      "halls": [8]
-    }, {
+      "halls": [
+        8
+      ]
+    },
+    {
       "id": 8,
-      "halls": [4]
+      "halls": [
+        4
+      ]
     }
   ],
   "centres": [
@@ -42,33 +69,38 @@
       "hallName": "Moremi Hall",
       "hallId": "MHL",
       "capacity": 100,
-      "numOfAvailableSeat": 100,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 99,
+      "seatsOccupied": [
+        38
+      ]
     },
     {
       "id": 2,
       "hallName": "Science Room 1",
       "hallId": "S1R",
-      "capacity": 35,
-      "numOfAvailableSeat": 35,
-      "seatsOccupied": [
-      ]
+      "capacity": 50,
+      "numOfAvailableSeat": 50,
+      "seatsOccupied": []
     },
     {
       "id": 3,
       "hallName": "Science Room 2",
       "hallId": "S2R",
       "capacity": 50,
-      "numOfAvailableSeat": 50,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 49,
+      "seatsOccupied": [
+        45
+      ]
     },
     {
       "id": 4,
       "hallName": "Eden Room",
       "hallId": "EDR",
       "capacity": 500,
-      "numOfAvailableSeat": 500,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 499,
+      "seatsOccupied": [
+        230
+      ]
     },
     {
       "id": 5,
@@ -83,34 +115,61 @@
       "hallName": "Suntory Hall",
       "hallId": "SUN",
       "capacity": 1500,
-      "numOfAvailableSeat": 1500,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 1499,
+      "seatsOccupied": [
+        582
+      ]
     },
     {
       "id": 7,
       "hallName": "Old Town",
       "hallId": "OLD",
       "capacity": 2500,
-      "numOfAvailableSeat": 2500,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 2498,
+      "seatsOccupied": [
+        2413,
+        787
+      ]
     },
     {
       "id": 8,
       "hallName": "New Town",
       "hallId": "NEW",
       "capacity": 2000,
-      "numOfAvailableSeat": 2000,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 1998,
+      "seatsOccupied": [
+        1390,
+        1876
+      ]
     }
   ],
   "userProfiles": [
     {
       "id": 1,
+      "firstName": "admin",
+      "lastName": "admin",
       "userName": "admin",
-      "userSeatNumber": null,
-      "hallOfChoice": null,
-      "generatedUserId": null,
-      "dateOfRegistration": null
+      "telephone": "admin",
+      "userSeatNumber": "000",
+      "userId": "001ADMIN",
+      "dateOfRegistration": null,
+      "timeOfRegistration": null,
+      "eventRegisteredFor": null,
+      "hallBookedFor": null
+    },
+    {
+      "firstName": "fdsdfa",
+      "lastName": "sdafas",
+      "userName": "aoli1",
+      "telephone": "4542445778",
+      "userSeatNumber": "45",
+      "userId": "21S2R45",
+      "dateOfRegistration": "Wed Jul 21 2021",
+      "timeOfRegistration": "7:04:16 AM",
+      "mailAddress": "a@gmail.com",
+      "eventRegisteredFor": "CSC 204",
+      "hallBookedFor": "S2R",
+      "id": 2
     }
   ]
 }

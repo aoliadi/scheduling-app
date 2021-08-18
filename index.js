@@ -1,6 +1,6 @@
 "use strict";
 
-let endpoint = `http://localhost:8000/`;
+let uri = `http://localhost:8000/`;
  
 const overallProcedure = {
 
@@ -11,11 +11,14 @@ const overallProcedure = {
     eventsOnDatabase: [],
 
     currentUserDetails: {
-        // userName: null,
-        // userSeatNumber: null,
-        // userId: null,
-        // dateOfRegistration: null,
-        // timeOfRegistration: null,
+        firstName: null,
+        lastName: null,
+        userName: null,
+        telephone: null,
+        userSeatNumber: null,
+        userId: null,
+        dateOfRegistration: null,
+        timeOfRegistration: null,
     },
      
     domElements: {
@@ -84,7 +87,7 @@ const overallProcedure = {
 
             switch (purpose) {
                 case "theEvents":
-                    allTheOptions += `<option value="${index}" data-id="${index}">${param}</option>`;
+                    allTheOptions += `<option value="${index}" data-id="${index}" data-event="${param}">${param}</option>`;
                     break;
 
                 case "theCentres":
@@ -116,7 +119,7 @@ const overallProcedure = {
         this.selectDomElements();
         
         //calls for data to be fetched
-        this.fetchData( endpoint + 'events/' )
+        this.fetchData( uri + 'events/' )
         .then( data => {
             // this.centresInfo = data;
             this.eventsOnDatabase = [...data];
@@ -242,6 +245,7 @@ const overallProcedure = {
 
     availableCentres(e) {
         let id = e.target.value,
+            chosenEvent,
             halls =  null;
 
         if(id === "null") {
@@ -250,10 +254,14 @@ const overallProcedure = {
             this.afterCheck["centre"] = false;
             this.readyForSubmission();
         } else {
-            this.fetchData( endpoint + "eventHalls/" + id)
+            chosenEvent = e.target[e.target.value].dataset.event;
+            this.storeUserDetails({label: "eventRegisteredFor", theInputValue: chosenEvent});
+
+            //then fetch the hall(s) available to host that event
+            this.fetchData( uri + "eventHalls/" + id)
             .then( data => {
                 halls = [...data.halls];
-                return this.fetchData( endpoint + "centres/")
+                return this.fetchData( uri + "centres/")
             })
             .then(data => {
                 // store all the centres
@@ -269,14 +277,12 @@ const overallProcedure = {
                 if(result.length > 1) {
                     this.domElements.theCentre.disabled = false;
                     this.afterCheck["centre"] = false;
-                    this.readyForSubmission();
                 } else {
                     this.domElements.theCentre.disabled = true;
                     this.afterCheck["centre"] = true;
                     this.storeCentreInfo(this.centres, result[0].hallId);
-                    this.readyForSubmission();
                 }
-
+                this.readyForSubmission();
                 this.domElements.theCentre.innerHTML = this.createOptions(result, "theCentres", "Choose an hall");
             })
             .catch( err => {
@@ -288,19 +294,20 @@ const overallProcedure = {
     storeCentreInfo(centres, centre) {
         let result = centres.filter(hall => centre.includes(hall.hallId));
         this.centreInfo = result[0];
+        this.storeUserDetails({label: "hallBookedFor", theInputValue: centre});
     },
     
     storeUserDetails({label, theInputValue}) {
         let dateFunc = new Date(),
-            year = dateFunc.getFullYear();
-
-        year = year.toString().slice(2);
-        let currentTime = dateFunc.toLocaleTimeString(),
+            currentTime = dateFunc.toLocaleTimeString(),
             currentDate = dateFunc.toDateString();
 
         this.currentUserDetails[`${label}`] = theInputValue;
         this.currentUserDetails.dateOfRegistration = currentDate;
         this.currentUserDetails.timeOfRegistration = currentTime;
+        // this.currentUserDetails.eventRegisteredFor = ;
+        // this.currentUserDetails.hallBookedFor = this.centreInfo.hallId ;
+
         // console.log(this.currentUserDetails);
     },
 
@@ -319,7 +326,7 @@ const overallProcedure = {
     },
 
     enableSubmitButton( response ) {
-        // response = false;
+        response = false;
         if(!response) {
             this.domElements.submitButton.disabled = false;
         } else {
@@ -329,25 +336,25 @@ const overallProcedure = {
     
     submission( e ) {
         e.preventDefault();
-        console.log("ready for submission");
-        // let theCentre = this.centresInfo;
+        // console.log("ready for submission");
+        let theCentre = this.centreInfo;
         
-        // if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
-        //     alert('Oooops! No seat available. Try again later');
-        // } else {
-        //     let randomNumber = this.getRandomNumber( theCentre.numOfAvailableSeat );
-        //     this.checkIfSeatIsAvailable( randomNumber );
-        // }
+        if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
+            alert('Oooops! No seat available. Try again later');
+        } else {
+            let randomNumber = this.getRandomNumber( theCentre.numOfAvailableSeat );
+            this.checkIfSeatIsAvailable( randomNumber );
+        }
     },
     
     getRandomNumber( range ) {
         let randomNumber = Math.floor(Math.random() * range);
-
+        console.log(randomNumber);
         return randomNumber;
     },
     
     checkIfSeatIsAvailable( numberGenerated ) {
-        let theCentre = this.centresInfo;
+        let theCentre = this.centreInfo;
         
         if ( numberGenerated === 0 && !theCentre.seatsOccupied.includes(1) ) {
             // debugger;
@@ -365,11 +372,11 @@ const overallProcedure = {
         
         // if seat is available, before giving seat number, let's store userDetails
         
-        let candidateNumber = this.addZeroes( {theNumber: numberGenerated, desiredLength: this.centresInfo.capacity.toString().length} ),
+        let candidateNumber = this.addZeroes( {theNumber: numberGenerated, desiredLength: theCentre.capacity.toString().length} ),
             year = new Date().getFullYear().toString().slice(2);
 
         this.currentUserDetails.userSeatNumber = candidateNumber;
-        this.currentUserDetails.userId = "" + year + this.centresInfo.hallId + candidateNumber;
+        this.currentUserDetails.userId = "" + year + theCentre.hallId + candidateNumber;
 
         //then giveSeatNumber to user
         this.giveSeatNumber();
@@ -377,35 +384,36 @@ const overallProcedure = {
     
     giveSeatNumber() {
 
-        let data = this.centresInfo;
+        let data = this.centreInfo;
         this.sendToDatabase({
-            endpoint,
-            type: "centres/2",
+            uri,
+            endpoint: `centres/${data.id}`,
             data,
             method: "PUT"
         });
-        
+
         data = this.currentUserDetails;
         this.sendToDatabase({
-            endpoint,
-            type: "userProfiles/",
+            uri,
+            endpoint: "userProfiles/",
             data,
             method: "POST"
         });
 
-        this.redirectUserToAnotherPage();
-        // window.location.assign('./another.html');
+        // this.redirectUserToAnotherPage();
     },
 
     // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
     addZeroes( {desiredLength, range, theNumber} ) {
-        let randomNumber = theNumber || Math.floor( Math.random() * range ),
-            newNumber;
+        //if theNumber is not given, getRandomNumber with the given range
+        let number = theNumber || this.getRandomNumber(range),
+        // let randomNumber = theNumber || this.getRandomNumber(range),
+            // newNumber;
             
         // if range is a falsy value (i.e. range is not given)
-        if (range && range.length > desiredLength ) {
+        if (range && range.toString().length > desiredLength) {
             newNumber = randomNumber;
-        } else if (randomNumber.length !== desiredLength ) {
+        } else if (randomNumber.length !== desiredLength) {
             // this checks the number of zeroes to add
             let toAdd = desiredLength - randomNumber.toString().length,
                 arr = Array(toAdd).fill(0); // creates an array filled with zeroes needed
@@ -419,7 +427,7 @@ const overallProcedure = {
         return newNumber;
     },
 
-    sendToDatabase({ endpoint: uri, type, method, data }) {
+    sendToDatabase({ uri, endpoint, method, data }) {
         const otherOptions = {
             method,
             headers: {
@@ -427,7 +435,7 @@ const overallProcedure = {
             },
             body: JSON.stringify(data)
         };
-        fetch( uri + type, otherOptions );
+        fetch( uri + endpoint, otherOptions );
 
         // this.revealSeatNumber();
     },
