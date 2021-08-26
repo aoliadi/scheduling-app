@@ -1,17 +1,15 @@
 {
-  "name": "scheduling app",
+  "name": "scheduleet",
   "version": "1.0.0",
-  "description": "Schedules candidates for exams and gives them seat numbers",
-  "main": "index.html",
+  "description": "scheduling app",
+  "main": "public/index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "npx json-server --watch data/data.json --port 8000"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aoliadi/scheduling-app.git"
   },
-  "keywords": [],
   "author": "aoliadi",
   "license": "ISC",
   "bugs": {
@@ -19,7 +17,5 @@
   },
   "homepage": "https://github.com/aoliadi/scheduling-app#readme",
   "dependencies": {
-    "dayjs": "^1.10.4",
-    "sweetalert2": "^10.16.7"
   }
 }
