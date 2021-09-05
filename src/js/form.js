@@ -412,20 +412,15 @@ const overallProcedure = {
     // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
     addZeroes( {desiredLength, range, theNumber} ) {
         //if theNumber is not given, getRandomNumber with the given range
-        let number = theNumber || this.getRandomNumber(range);
-        // let randomNumber = theNumber || this.getRandomNumber(range),
-        let newNumber;
-            
-        // if range is a falsy value (i.e. range is not given)
-       /* if (!range && range.toString().length > desiredLength) {
-            // newNumber = number;
-        } else*/ if (number.length !== desiredLength) {
+        let newNumber, 
+            number = theNumber || this.getRandomNumber(range);
+        
+        if (number.length !== desiredLength) {
             // this checks the number of zeroes to add
             let toAdd = desiredLength - number.toString().length,
                 arr = Array(toAdd).fill(0); // creates an array filled with zeroes needed
             arr.push(number);
             newNumber = arr.join('');
-            // debugger;
         } else {
             newNumber = number;
         }
