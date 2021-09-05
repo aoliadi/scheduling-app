@@ -406,7 +406,7 @@ const overallProcedure = {
     // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
     addZeroes( {desiredLength, range, theNumber} ) {
         //if theNumber is not given, getRandomNumber with the given range
-        let number = theNumber || this.getRandomNumber(range),
+        let number = theNumber || this.getRandomNumber(range);
         // let randomNumber = theNumber || this.getRandomNumber(range),
             // newNumber;
             
