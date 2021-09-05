@@ -342,14 +342,14 @@ const overallProcedure = {
         if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
             alert('Oooops! No seat available. Try again later');
         } else {
-            let randomNumber = this.getRandomNumber( theCentre.numOfAvailableSeat );
-            this.checkIfSeatIsAvailable( randomNumber );
+            let randomNumber = this.getRandomNumber(theCentre.numOfAvailableSeat);
+            this.checkIfSeatIsAvailable(randomNumber);
         }
     },
     
     getRandomNumber( range ) {
         let randomNumber = Math.floor(Math.random() * range);
-        console.log(randomNumber);
+        // console.log(randomNumber);
         return randomNumber;
     },
     
@@ -359,21 +359,27 @@ const overallProcedure = {
         if ( numberGenerated === 0 && !theCentre.seatsOccupied.includes(1) ) {
             // debugger;
             numberGenerated = 1;
-            theCentre.seatsOccupied.push(numberGenerated);
+            // theCentre.seatsOccupied.push(numberGenerated);
             theCentre.numOfAvailableSeat -= 1;
-        } else if ( numberGenerated !== 0 && !theCentre.seatsOccupied.includes(numberGenerated) ) {
+        } else if (numberGenerated !== 0 && !theCentre.seatsOccupied.includes(numberGenerated)) {
             // debugger;
-            theCentre.seatsOccupied.push(numberGenerated);
-            theCentre.numOfAvailableSeat -= 1;
+            // theCentre.seatsOccupied.push(numberGenerated);
+            // theCentre.numOfAvailableSeat -= 1;
         } else {
             // debugger;
-            this.getRandomNumber( this.centresInfo.numOfAvailableSeat );
+            this.getRandomNumber(this.centresInfo.numOfAvailableSeat);
         }
         
         // if seat is available, before giving seat number, let's store userDetails
         
-        let candidateNumber = this.addZeroes( {theNumber: numberGenerated, desiredLength: theCentre.capacity.toString().length} ),
-            year = new Date().getFullYear().toString().slice(2);
+        let candidateNumber = this.addZeroes({
+            theNumber: numberGenerated, 
+            desiredLength: theCentre.capacity.toString().length
+        });
+        let year = new Date().getFullYear().toString().slice(2);
+
+        theCentre.numOfAvailableSeat -= 1;
+        theCentre.seatsOccupied.push(candidateNumber);
 
         this.currentUserDetails.userSeatNumber = candidateNumber;
         this.currentUserDetails.userId = "" + year + theCentre.hallId + candidateNumber;
@@ -408,23 +414,23 @@ const overallProcedure = {
         //if theNumber is not given, getRandomNumber with the given range
         let number = theNumber || this.getRandomNumber(range);
         // let randomNumber = theNumber || this.getRandomNumber(range),
-            // newNumber;
+        let newNumber;
             
         // if range is a falsy value (i.e. range is not given)
-        if (range && range.toString().length > desiredLength) {
-            newNumber = randomNumber;
-        } else if (randomNumber.length !== desiredLength) {
+       /* if (!range && range.toString().length > desiredLength) {
+            // newNumber = number;
+        } else*/ if (number.length !== desiredLength) {
             // this checks the number of zeroes to add
-            let toAdd = desiredLength - randomNumber.toString().length,
+            let toAdd = desiredLength - number.toString().length,
                 arr = Array(toAdd).fill(0); // creates an array filled with zeroes needed
-            arr.push(randomNumber);
+            arr.push(number);
             newNumber = arr.join('');
             // debugger;
         } else {
-            newNumber = randomNumber;
+            newNumber = number;
         }
     
-        return newNumber;
+        return Number(newNumber);
     },
 
     sendToDatabase({ uri, endpoint, method, data }) {

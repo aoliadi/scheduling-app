@@ -115,9 +115,8 @@
       "hallName": "Suntory Hall",
       "hallId": "SUN",
       "capacity": 1500,
-      "numOfAvailableSeat": 1499,
+      "numOfAvailableSeat": 1500,
       "seatsOccupied": [
-        582
       ]
     },
     {
@@ -125,10 +124,8 @@
       "hallName": "Old Town",
       "hallId": "OLD",
       "capacity": 2500,
-      "numOfAvailableSeat": 2498,
+      "numOfAvailableSeat": 2500,
       "seatsOccupied": [
-        2413,
-        787
       ]
     },
     {
@@ -136,10 +133,8 @@
       "hallName": "New Town",
       "hallId": "NEW",
       "capacity": 2000,
-      "numOfAvailableSeat": 1998,
+      "numOfAvailableSeat": 2000,
       "seatsOccupied": [
-        1390,
-        1876
       ]
     }
   ],
@@ -155,21 +150,8 @@
       "dateOfRegistration": null,
       "timeOfRegistration": null,
       "eventRegisteredFor": null,
+      "mailAddress": null,
       "hallBookedFor": null
-    },
-    {
-      "firstName": "fdsdfa",
-      "lastName": "sdafas",
-      "userName": "aoli1",
-      "telephone": "4542445778",
-      "userSeatNumber": "45",
-      "userId": "21S2R45",
-      "dateOfRegistration": "Wed Jul 21 2021",
-      "timeOfRegistration": "7:04:16 AM",
-      "mailAddress": "a@gmail.com",
-      "eventRegisteredFor": "CSC 204",
-      "hallBookedFor": "S2R",
-      "id": 2
     }
   ]
 }
