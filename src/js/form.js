@@ -79,15 +79,26 @@ const overallProcedure = {
     },
 
     createOptions(arr, purpose, defaultChoice) {
-        //If items in the array (i.e. arr) is more than one, create a default option before accessing array contents; if not, set it to null.
-        let allTheOptions = (arr.length > 1) ? `<option value="null" data-id="null">${defaultChoice}</option>` : null;
+        //If items in the array (i.e. arr) is more than one, create a default option before accessing array contents.
+        // if it is not more than one, set it as null so that the only option is the only one created.
+        let allTheOptions = (arr.length > 1) ? 
+                            `<option value="null" data-id="null">
+                                ${defaultChoice}
+                            </option>`
+                            : null;
+
         arr.forEach((param, index) => {
-            //if param doesn't have an hallName property value, use param as listTitle; else, use param.hallName.
             index += 1;
 
             switch (purpose) {
                 case "theEvents":
-                    allTheOptions += `<option value="${index}" data-id="${index}" data-event="${param}">${param}</option>`;
+                    // this is the arr(which is "param" in this block) sent for theEvents. 
+                    // [{"event": "FOSIC 2020","id": 7}]
+                    allTheOptions += `
+                        <option value="${param.event}"">
+                            ${param.event}
+                        </option>
+                    `;
                     break;
 
                 case "theCentres":
@@ -118,12 +129,15 @@ const overallProcedure = {
         // this selects DOM elements
         this.selectDomElements();
         
-        //calls for data to be fetched
+        //calls for data for the different event options
         this.fetchData( uri + 'events/' )
-        .then( data => {
-            // this.centresInfo = data;
-            this.eventsOnDatabase = [...data];
-            this.domElements.theEvent.innerHTML = this.createOptions(this.eventsOnDatabase, "theEvents", "Choose an event");
+        .then( events => {
+            // this loops through the data fetched and destructures to get the event in particular, then pushes to eventsOnDatabase
+            for (const {event} of events) {
+                this.eventsOnDatabase.push(event)
+            }
+            // this logic calls the createOptions function to create user-selectable options for the events fetched
+            this.domElements.theEvent.innerHTML = this.createOptions(events, "theEvents", "Choose an event");
             // this.domElements.loadingDiv.classList.add("hidden");
             // this.domElements.formWrapper.classList.remove("hidden");
         }).catch( err => {
@@ -158,27 +172,7 @@ const overallProcedure = {
 
     //fetch necessary data
     fetchData( uri ) {
-        //pending further iterations, we use only the second hall - Science Room 1 - for now.
-        // let response = fetch( uri + 2 ).then(res => {
-        //     if( res.status !== 200 ) {
-        //         throw new Error('wrong endpoint')
-        //     }
-        //     return res.json();
-        // });
-
-        // return response;
-
-        // fetch("data/data.json")
-        // .then(res => res.json())
-        // .then(data => {
-        //     [events] = [data.events];
-        //     let html = "";
-        //     events.forEach((anEvent, index) => {
-        //         html += `<option value="${index}" data-id="${index++}">${anEvent}</option>`;
-        //         choice.innerHTML = html
-        //     })
-        // })
-        let response = fetch( uri ).then(res => {
+        const response = fetch( uri ).then(res => {
             if( res.status !== 200 ) {
                 throw new Error('wrong endpoint')
             }
@@ -244,23 +238,30 @@ const overallProcedure = {
     },
 
     availableCentres(e) {
-        let id = e.target.value,
-            chosenEvent,
-            halls =  null;
+        const chosenEvent  = e.target.value;
+        let halls =  null;
 
-        if(id === "null") {
+        if(chosenEvent === "null") {
+            //set the centres options as "choose an hall"
             this.domElements.theCentre.innerHTML = `<option value="null">Choose an hall</option>`;
+
+            //also disable the centres options, so it's unclickable
             this.domElements.theCentre.disabled = true;
+
+            //then set its value as false: meaning it hasn't been filled
             this.afterCheck["centre"] = false;
+            
             this.readyForSubmission();
         } else {
-            chosenEvent = e.target[e.target.value].dataset.event;
+            //  this populates the user details with the event chosen into eventRegisteredFor 
             this.storeUserDetails({label: "eventRegisteredFor", theInputValue: chosenEvent});
 
-            //then fetch the hall(s) available to host that event
-            this.fetchData( uri + "eventHalls/" + id)
+            //  this goes through the eventHalls route and gets the hall(s) available to host that event
+            this.fetchData( uri + `eventHalls?event=${chosenEvent}`)
             .then( data => {
-                halls = [...data.halls];
+                const theChosenOption = data[data.length - 1]
+                halls = [...theChosenOption.halls];
+                
                 return this.fetchData( uri + "centres/")
             })
             .then(data => {
@@ -394,7 +395,7 @@ const overallProcedure = {
             uri,
             endpoint: `centres/${data.id}`,
             data,
-            method: "PUT"
+            method: "POST"
         });
 
         data = this.currentUserDetails;

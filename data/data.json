@@ -36,6 +36,7 @@
   "eventHalls": [
     {
       "id": 1,
+      "event": "CSC 204",
       "halls": [
         2,
         3
@@ -43,24 +44,28 @@
     },
     {
       "id": 2,
+      "event": "Engineering Summit",
       "halls": [
         6
       ]
     },
     {
       "id": 3,
+      "event": "24th Convocation",
       "halls": [
         7
       ]
     },
     {
       "id": 4,
+      "event": "21st Matriculation",
       "halls": [
         8
       ]
     },
     {
       "id": 5,
+      "event": "GNS 101",
       "halls": [
         1,
         4,
@@ -70,18 +75,21 @@
     },
     {
       "id": 6,
+      "event": "SDG Conference",
       "halls": [
         4
       ]
     },
     {
       "id": 7,
+      "event": "FOSIC 2020",
       "halls": [
         8
       ]
     },
     {
       "id": 8,
+      "event": "UCL Final",
       "halls": [
         4
       ]
