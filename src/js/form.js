@@ -303,8 +303,7 @@ const overallProcedure = {
             currentDate = dateFunc.toDateString();
 
         this.currentUserDetails[`${label}`] = theInputValue;
-        this.currentUserDetails.dateOfRegistration = currentDate;
-        this.currentUserDetails.timeOfRegistration = currentTime;
+        this.currentUserDetails.timeOfRegistration = `${currentDate} ${currentTime}`;
         // this.currentUserDetails.eventRegisteredFor = ;
         // this.currentUserDetails.hallBookedFor = this.centreInfo.hallId ;
 
