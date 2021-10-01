@@ -1,13 +1,37 @@
 {
   "events": [
-    "CSC 204",
-    "Engineering Summit",
-    "24th Convocation",
-    "21st Matriculation",
-    "GNS 101",
-    "SDG Conference",
-    "FOSIC 2020",
-    "UCL Final"
+    {
+      "event": "CSC 204",
+      "id": 1
+    },
+    {
+      "event": "Engineering Summit",
+      "id": 2
+    },
+    {
+      "event": "24th Convocation",
+      "id": 3
+    },
+    {
+      "event": "21st Matriculation",
+      "id": 4
+    },
+    {
+      "event": "GNS 101",
+      "id": 5
+    },
+    {
+      "event": "SDG Conference",
+      "id": 6
+    },
+    {
+      "event": "FOSIC 2020",
+      "id": 7
+    },
+    {
+      "event": "UCL Final",
+      "id": 8
+    }
   ],
   "eventHalls": [
     {
@@ -69,9 +93,8 @@
       "hallName": "Moremi Hall",
       "hallId": "MHL",
       "capacity": 100,
-      "numOfAvailableSeat": 99,
+      "numOfAvailableSeat": 100,
       "seatsOccupied": [
-        38
       ]
     },
     {
@@ -87,9 +110,8 @@
       "hallName": "Science Room 2",
       "hallId": "S2R",
       "capacity": 50,
-      "numOfAvailableSeat": 49,
+      "numOfAvailableSeat": 50,
       "seatsOccupied": [
-        45
       ]
     },
     {
@@ -97,9 +119,8 @@
       "hallName": "Eden Room",
       "hallId": "EDR",
       "capacity": 500,
-      "numOfAvailableSeat": 499,
+      "numOfAvailableSeat": 500,
       "seatsOccupied": [
-        230
       ]
     },
     {
@@ -116,8 +137,7 @@
       "hallId": "SUN",
       "capacity": 1500,
       "numOfAvailableSeat": 1500,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 7,
@@ -125,8 +145,7 @@
       "hallId": "OLD",
       "capacity": 2500,
       "numOfAvailableSeat": 2500,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 8,
