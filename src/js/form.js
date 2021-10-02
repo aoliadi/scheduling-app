@@ -15,10 +15,13 @@ const overallProcedure = {
         lastName: null,
         userName: null,
         telephone: null,
+        mailAddress: null,
+        eventRegisteredFor: null,
+        hallBookedFor: null,
         userSeatNumber: null,
         userId: null,
         dateOfRegistration: null,
-        timeOfRegistration: null,
+        timeOfRegistration: null
     },
      
     domElements: {
@@ -66,18 +69,6 @@ const overallProcedure = {
         centre: false
     },
 
-    changeAfterCheckValueOf(e, label) {
-        //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
-        // let value = (!e.target.value || e.target.value == "null") ? false : true; //I've forgotten the usefulness of !e.target.value
-        let value = (e.target.value == "null") ? false : true,
-            hallId = e.target[e.target.value].dataset.hallid;
-
-        this.afterCheck[`${label}`] = value;
-        
-        this.storeCentreInfo(this.centres, hallId )
-        this.readyForSubmission();
-    },
-
     createOptions(arr, purpose, defaultChoice) {
         //If items in the array (i.e. arr) is more than one, create a default option before accessing array contents.
         // if it is not more than one, set it as null so that the only option is the only one created.
@@ -87,12 +78,11 @@ const overallProcedure = {
                             </option>`
                             : null;
 
-        arr.forEach((param, index) => {
-            index += 1;
+        arr.forEach(param => {
 
             switch (purpose) {
                 case "theEvents":
-                    // this is the arr(which is "param" in this block) sent for theEvents. 
+                    // this is the arr (which is "param" in this block) recieved as theEvents. 
                     // [{"event": "FOSIC 2020","id": 7}]
                     allTheOptions += `
                         <option value="${param.event}"">
@@ -100,22 +90,27 @@ const overallProcedure = {
                         </option>
                     `;
                     break;
-
+                    
                 case "theCentres":
-                    allTheOptions += `<option value="${index}" data-id="${index}" data-hallId="${param.hallId}">${param.hallName}</option>`;
+                    // this is the arr (which is also "param" in this block) recieved as theCentres. 
+                    // [{"id": 7,"hallName": "Old Town","hallId":"OLD", "capacity": 2500,"numOfAvailableSeat": 2500,"seatsOccupied": []}]
+                    allTheOptions += `
+                        <option value="${param.hallName}" data-hallId="${param.hallId}">
+                            ${param.hallName}
+                        </option>
+                    `;
                     break;
             
                 default:
                     break;
             }
         });
-        // allTheOptions.addEventListener("click", (e) => console.log(e.target));
         return allTheOptions;
     },
 
     validClassName(action, targetElement) {
         // console.log(action, targetElement);
-        if(action == "add") {
+        if(action === "add") {
             targetElement.classList.remove('input--invalid');
             targetElement.classList.add('input--valid');
         } else {
@@ -133,9 +128,8 @@ const overallProcedure = {
         this.fetchData( uri + 'events/' )
         .then( events => {
             // this loops through the data fetched and destructures to get the event in particular, then pushes to eventsOnDatabase
-            for (const {event} of events) {
-                this.eventsOnDatabase.push(event)
-            }
+            for (const {event} of events) { this.eventsOnDatabase.push(event) };
+
             // this logic calls the createOptions function to create user-selectable options for the events fetched
             this.domElements.theEvent.innerHTML = this.createOptions(events, "theEvents", "Choose an event");
             // this.domElements.loadingDiv.classList.add("hidden");
@@ -192,8 +186,8 @@ const overallProcedure = {
         handlerObjectKey.checkMailAddress = mailAddress.addEventListener( "input", (e) => this.validateInput(e, "mailAddress") );
         handlerObjectKey.checkUserName = userName.addEventListener( "input", (e) => this.validateInput(e, "userName") );
         handlerObjectKey.checkTelephone = telephoneNumber.addEventListener( "input", (e) => this.validateInput(e, "telephone") );
-        handlerObjectKey.checkEvent = theEvent.addEventListener( "change", (e) => this.availableCentres(e) );
-        handlerObjectKey.checkCentre = theCentre.addEventListener( "change", (e) => this.changeAfterCheckValueOf(e, "centre") );
+        handlerObjectKey.checkEvent = theEvent.addEventListener( "change", (e) => this.availableEvents(e) );
+        handlerObjectKey.checkCentre = theCentre.addEventListener( "change", (e) => this.storeDetails("centre", e) );
         handlerObjectKey.submit = submitButton.addEventListener( "click", (e) => this.submission(e) );
         // handlerObjectKey.form = formElem.addEventListener( "onsubmit", (e) => this.revealSeatNumber() );
         // handlerObjectKey.closeAlert = closeIcon.addEventListener( "click", (e) => this.redirectUserToAnotherPage() );
@@ -234,82 +228,108 @@ const overallProcedure = {
         this.afterCheck[`${label}`] = theResponse;
         this.validClassName(theAction, e.target);
         this.readyForSubmission();
-        this.storeUserDetails({label, theInputValue});
+        this.storeDetails(label, theInputValue);
     },
 
-    availableCentres(e) {
+    availableEvents(e) {
         const chosenEvent  = e.target.value;
-        let halls =  null;
 
         if(chosenEvent === "null") {
-            //set the centres options as "choose an hall"
+            // set the centres options as "choose an hall"
             this.domElements.theCentre.innerHTML = `<option value="null">Choose an hall</option>`;
 
-            //also disable the centres options, so it's unclickable
+            // also disables the centres options, so it is unclickable
             this.domElements.theCentre.disabled = true;
 
-            //then set its value as false: meaning it hasn't been filled
+            // then set its value as false: meaning it hasn't been filled
             this.afterCheck["centre"] = false;
-            
+
             this.readyForSubmission();
         } else {
-            //  this populates the user details with the event chosen into eventRegisteredFor 
-            this.storeUserDetails({label: "eventRegisteredFor", theInputValue: chosenEvent});
-
-            //  this goes through the eventHalls route and gets the hall(s) available to host that event
-            this.fetchData( uri + `eventHalls?event=${chosenEvent}`)
-            .then( data => {
-                const theChosenOption = data[data.length - 1]
-                halls = [...theChosenOption.halls];
-                
-                return this.fetchData( uri + "centres/")
-            })
-            .then(data => {
-                // store all the centres
-                this.centres = [...data];
-
-                // the 1st filter function checks for centres hallId that matches any of the "halls" array-item and creates an array of the centres
-                // the 2nd filter function removes any of the hall where there's no vacant seat for candidates 
-                // the map function then extracts only the hallName of the centres available for the event
-                let result = data.filter(item => halls.includes(item.id))
-                                .filter(centre => centre.numOfAvailableSeat !== 0)
-                                // .map(item => item.hallName);
-
-                if(result.length > 1) {
-                    this.domElements.theCentre.disabled = false;
-                    this.afterCheck["centre"] = false;
-                } else {
-                    this.domElements.theCentre.disabled = true;
-                    this.afterCheck["centre"] = true;
-                    this.storeCentreInfo(this.centres, result[0].hallId);
-                }
-                this.readyForSubmission();
-                this.domElements.theCentre.innerHTML = this.createOptions(result, "theCentres", "Choose an hall");
-            })
-            .catch( err => {
-                // window.location.assign("./404.html")
-            });
+            // this populates the user details with the event chosen into eventRegisteredFor 
+            this.storeDetails("eventRegisteredFor", chosenEvent)
+            this.availableCentres(chosenEvent)
         }
     },
 
-    storeCentreInfo(centres, centre) {
-        let result = centres.filter(hall => centre.includes(hall.hallId));
-        this.centreInfo = result[0];
-        this.storeUserDetails({label: "hallBookedFor", theInputValue: centre});
+    availableCentres(theEvent) {
+        let halls =  null;
+        
+        //  this goes through the eventHalls route and gets the hall(s) available to host that event
+        this.fetchData( uri + `eventHalls?event=${theEvent}`)
+        .then( data => {
+            // the data will most likely always be a single-item array (i.e. data.length === 1)
+            // so, we choose the first array item {data[0] i.e. data[1-1]}
+            const theChosenOption = data[data.length - 1]
+
+            // this is the array item chosen with data[0]. 
+            // then its "halls" property value(s) is/are spread into "halls"
+            // [{"id": 7,"event": "FOSIC 2020","halls": ["NEW"]}]
+            halls = [...theChosenOption.halls];
+            
+            if(this.centres) {
+                // if the centres have been fetched from database before, there is no need in fetching again
+                // so, "this.centres" is collected by the ".then" as the data, instead of a response from a fetch
+                return this.centres;
+            } else {
+                // if centres haven't been fetched from database, a fetch process is used 
+                // a promise is returned, and the ".then" collects the centres
+                return this.fetchData( uri + "centres/")
+            }
+        })
+        .then(data => {
+            // store all the centres
+            this.centres = [...data];
+
+            // the 1st filter function checks for centres hallId that matches any of the "halls" array-item and creates an array of the centres
+            // the 2nd filter function removes any of the hall where there's no vacant seat for candidates 
+            // the map function then extracts only the hallName of the centres available for the event
+            let result = data.filter(item => halls.includes(item.hallId))
+                            .filter(centre => centre.numOfAvailableSeat !== 0)
+                            // .map(item => item.hallName);
+                            
+            if(result.length > 1) {
+                this.domElements.theCentre.disabled = false;
+                this.afterCheck["centre"] = false;
+                this.storeDetails("hallBookedFor", null)
+            } else {
+                this.domElements.theCentre.disabled = true;
+                this.afterCheck["centre"] = true;
+                this.storeDetails("hallBookedFor", result[0].hallName)
+            }
+            this.readyForSubmission();
+            this.domElements.theCentre.innerHTML = this.createOptions(result, "theCentres", "Choose an hall");
+        })
+        .catch( err => {
+            // window.location.assign("./404.html")
+        });
+    },
+
+    storeDetails(param, val) {
+        switch (param) {
+            case "centre":
+                const chosenCentre = val.target.value;
+                //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
+                this.afterCheck[`${param}`] = (chosenCentre == "null") ? false : true,
+
+                this.currentUserDetails["hallBookedFor"] = chosenCentre;
+                break;
+        
+            default:
+                this.currentUserDetails[`${param}`] = val;
+                break;
+        }
+
     },
     
-    storeUserDetails({label, theInputValue}) {
-        let dateFunc = new Date(),
-            currentTime = dateFunc.toLocaleTimeString(),
-            currentDate = dateFunc.toDateString();
+    // storeUserDetails({label, theInputValue}) {
+    //     let dateFunc = new Date(),
+    //         currentTime = dateFunc.toLocaleTimeString(),
+    //         currentDate = dateFunc.toDateString();
 
-        this.currentUserDetails[`${label}`] = theInputValue;
-        this.currentUserDetails.timeOfRegistration = `${currentDate} ${currentTime}`;
-        // this.currentUserDetails.eventRegisteredFor = ;
-        // this.currentUserDetails.hallBookedFor = this.centreInfo.hallId ;
-
-        // console.log(this.currentUserDetails);
-    },
+    //     this.currentUserDetails[`${label}`] = theInputValue;
+    //     this.currentUserDetails.timeOfRegistration = `${currentDate} ${currentTime}`;
+    // },
 
     anyFalseValue( obj ) {
         let arr = [];
@@ -336,20 +356,18 @@ const overallProcedure = {
     
     submission( e ) {
         e.preventDefault();
-        // console.log("ready for submission");
-        let theCentre = this.centreInfo;
+        const theCentre = this.centreInfo;
         
         if ( theCentre.numOfAvailableSeat === 0 || theCentre.seatsOccupied.length === theCentre.capacity ) {
             alert('Oooops! No seat available. Try again later');
         } else {
-            let randomNumber = this.getRandomNumber(theCentre.numOfAvailableSeat);
+            const randomNumber = this.getRandomNumber(theCentre.numOfAvailableSeat);
             this.checkIfSeatIsAvailable(randomNumber);
         }
     },
     
     getRandomNumber( range ) {
         let randomNumber = Math.floor(Math.random() * range);
-        // console.log(randomNumber);
         return randomNumber;
     },
     
