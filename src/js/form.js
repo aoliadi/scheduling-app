@@ -263,7 +263,8 @@ const overallProcedure = {
             } else {
                 this.domElements.theCentre.disabled = true;
                 this.afterCheck["centre"] = true;
-                this.storeDetails("hallBookedFor", result[0].hallName)
+                this.centreInfo = result[0];
+                this.storeDetails("hallBookedFor", result[0].hallName);
             }
             this.readyForSubmission();
             this.domElements.theCentre.innerHTML = this.createOptions(result, "theCentres", "Choose an hall");
@@ -277,9 +278,11 @@ const overallProcedure = {
         switch (param) {
             case "centre":
                 const chosenCentre = val.target.value;
+                
                 //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
                 this.afterCheck[`${param}`] = (chosenCentre == "null") ? false : true,
-
+                
+                this.centreInfo = this.centres.filter(item => item.hallName === chosenCentre)
                 this.currentUserDetails["hallBookedFor"] = chosenCentre;
                 break;
         
