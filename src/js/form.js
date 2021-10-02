@@ -1,7 +1,7 @@
 "use strict";
 
-let uri = `https://scheduleet.herokuapp.com/`;
-// let uri = `http://localhost:8000/`;
+// let uri = `https://scheduleet.herokuapp.com/`;
+let uri = `http://localhost:8000/`;
  
 const overallProcedure = {
 
@@ -239,10 +239,10 @@ const overallProcedure = {
             if(this.centres) {
                 // if the centres have been fetched from database before, there is no need in fetching again
                 // so, "this.centres" is collected by the ".then" as the data, instead of a response from a fetch
-                console.log("no fetch");
+                // console.log("no fetch");
                 return this.centres;
             } else {
-                console.log("fetch");
+                // console.log("fetch");
                 // if centres haven't been fetched from database, a fetch process is used 
                 // a promise is returned, and the ".then" collects the centres
                 return this.fetchData( uri + "centres/")
