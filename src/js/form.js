@@ -10,33 +10,9 @@ const overallProcedure = {
 
     eventsOnDatabase: [],
 
-    currentUserDetails: {
-        firstName: null,
-        lastName: null,
-        userName: null,
-        telephone: null,
-        mailAddress: null,
-        eventRegisteredFor: null,
-        hallBookedFor: null,
-        userSeatNumber: null,
-        userId: null,
-        dateOfRegistration: null,
-        timeOfRegistration: null
-    },
+    currentUserDetails: {},
      
     domElements: {
-        theForm: null,
-        
-        firstName: null,
-        lastName: null,
-        userName: null,
-        mailAddress: null,
-        telephoneNumber:  null,
-        theEvent: null,
-        theCentre: null,
-        submitButton: null,
-
-
         // loadingDiv: null,
         // formWrapper: null,
         // usernameInput: null,
@@ -48,14 +24,6 @@ const overallProcedure = {
     },
     
     handlesEvents: {
-        checkFirstName: null,
-        checkLastName: null,
-        checkUserName: null,
-        checkMailAddress: null,
-        checkTelephone: null,
-        checkEvent: null,
-        checkCentre: null,
-        submit: null
         // form: null,
         // closeAlert: null,
     },
@@ -346,7 +314,7 @@ const overallProcedure = {
     },
 
     enableSubmitButton( response ) {
-        response = false;
+        // response = false;
         if(!response) {
             this.domElements.submitButton.disabled = false;
         } else {
