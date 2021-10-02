@@ -1,6 +1,7 @@
 "use strict";
 
-let uri = `http://localhost:8000/`;
+let uri = `https://scheduleet.herokuapp.com/`;
+// let uri = `http://localhost:8000/`;
  
 const overallProcedure = {
 
@@ -238,8 +239,10 @@ const overallProcedure = {
             if(this.centres) {
                 // if the centres have been fetched from database before, there is no need in fetching again
                 // so, "this.centres" is collected by the ".then" as the data, instead of a response from a fetch
+                console.log("no fetch");
                 return this.centres;
             } else {
+                console.log("fetch");
                 // if centres haven't been fetched from database, a fetch process is used 
                 // a promise is returned, and the ".then" collects the centres
                 return this.fetchData( uri + "centres/")
@@ -278,11 +281,11 @@ const overallProcedure = {
         switch (param) {
             case "centre":
                 const chosenCentre = val.target.value;
-                
+
                 //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
-                this.afterCheck[`${param}`] = (chosenCentre == "null") ? false : true,
+                this.afterCheck[`${param}`] = (chosenCentre == "null") ? false : true;
                 
-                this.centreInfo = this.centres.filter(item => item.hallName === chosenCentre)
+                [this.centreInfo] = this.centres.filter(item => item.hallName === chosenCentre);
                 this.currentUserDetails["hallBookedFor"] = chosenCentre;
                 break;
         
@@ -384,7 +387,7 @@ const overallProcedure = {
             uri,
             endpoint: `centres/${data.id}`,
             data,
-            method: "POST"
+            method: "PUT"
         });
 
         data = this.currentUserDetails;
