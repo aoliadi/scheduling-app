@@ -38,60 +38,60 @@
       "id": 1,
       "event": "CSC 204",
       "halls": [
-        2,
-        3
+        "S1R",
+        "S2R"
       ]
     },
     {
       "id": 2,
       "event": "Engineering Summit",
       "halls": [
-        6
+        "SUN"
       ]
     },
     {
       "id": 3,
       "event": "24th Convocation",
       "halls": [
-        7
+        "OLD"
       ]
     },
     {
       "id": 4,
       "event": "21st Matriculation",
       "halls": [
-        8
+        "NEW"
       ]
     },
     {
       "id": 5,
       "event": "GNS 101",
       "halls": [
-        1,
-        4,
-        5,
-        7
+        "MHL",
+        "EDR",
+        "KMC",
+        "OLD"
       ]
     },
     {
       "id": 6,
       "event": "SDG Conference",
       "halls": [
-        4
+        "EDR"
       ]
     },
     {
       "id": 7,
       "event": "FOSIC 2020",
       "halls": [
-        8
+        "NEW"
       ]
     },
     {
       "id": 8,
       "event": "UCL Final",
       "halls": [
-        4
+        "EDR"
       ]
     }
   ],
@@ -102,8 +102,7 @@
       "hallId": "MHL",
       "capacity": 100,
       "numOfAvailableSeat": 100,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 2,
@@ -119,8 +118,7 @@
       "hallId": "S2R",
       "capacity": 50,
       "numOfAvailableSeat": 50,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 4,
@@ -128,8 +126,7 @@
       "hallId": "EDR",
       "capacity": 500,
       "numOfAvailableSeat": 500,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 5,
@@ -161,8 +158,7 @@
       "hallId": "NEW",
       "capacity": 2000,
       "numOfAvailableSeat": 2000,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     }
   ],
   "userProfiles": [
@@ -179,6 +175,19 @@
       "eventRegisteredFor": null,
       "mailAddress": null,
       "hallBookedFor": null
+    },
+    {
+      "firstName": null,
+      "lastName": null,
+      "userName": null,
+      "telephone": null,
+      "userSeatNumber": 320,
+      "userId": "21EDR320",
+      "dateOfRegistration": null,
+      "timeOfRegistration": "Fri Oct 01 2021 8:21:22 PM",
+      "eventRegisteredFor": "SDG Conference",
+      "hallBookedFor": "EDR",
+      "id": 2
     }
   ]
 }
