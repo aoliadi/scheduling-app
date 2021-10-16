@@ -1,40 +1,6 @@
 {
   "events": [
     {
-      "event": "CSC 204",
-      "id": 1
-    },
-    {
-      "event": "Engineering Summit",
-      "id": 2
-    },
-    {
-      "event": "24th Convocation",
-      "id": 3
-    },
-    {
-      "event": "21st Matriculation",
-      "id": 4
-    },
-    {
-      "event": "GNS 101",
-      "id": 5
-    },
-    {
-      "event": "SDG Conference",
-      "id": 6
-    },
-    {
-      "event": "FOSIC 2020",
-      "id": 7
-    },
-    {
-      "event": "UCL Final",
-      "id": 8
-    }
-  ],
-  "eventHalls": [
-    {
       "id": 1,
       "event": "CSC 204",
       "halls": [
@@ -175,19 +141,6 @@
       "eventRegisteredFor": null,
       "mailAddress": null,
       "hallBookedFor": null
-    },
-    {
-      "firstName": null,
-      "lastName": null,
-      "userName": null,
-      "telephone": null,
-      "userSeatNumber": 320,
-      "userId": "21EDR320",
-      "dateOfRegistration": null,
-      "timeOfRegistration": "Fri Oct 01 2021 8:21:22 PM",
-      "eventRegisteredFor": "SDG Conference",
-      "hallBookedFor": "EDR",
-      "id": 2
     }
   ]
 }
