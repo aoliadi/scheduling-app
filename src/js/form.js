@@ -1,7 +1,7 @@
 "use strict";
 
-let uri = `https://scheduleet.herokuapp.com/`;
-// let uri = `http://localhost:8000/`;
+// let uri = `https://scheduleet.herokuapp.com/`;
+let uri = `http://localhost:8000/`;
  
 const overallProcedure = {
 
