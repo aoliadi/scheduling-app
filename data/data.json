@@ -92,7 +92,8 @@
       "hallId": "EDR",
       "capacity": 500,
       "numOfAvailableSeat": 500,
-      "seatsOccupied": []
+      "seatsOccupied": [
+      ]
     },
     {
       "id": 5,
@@ -107,9 +108,8 @@
       "hallName": "Suntory Hall",
       "hallId": "SUN",
       "capacity": 1500,
-      "numOfAvailableSeat": 1499,
+      "numOfAvailableSeat": 1500,
       "seatsOccupied": [
-        393
       ]
     },
     {
@@ -118,16 +118,16 @@
       "hallId": "OLD",
       "capacity": 2500,
       "numOfAvailableSeat": 2500,
-      "seatsOccupied": []
+      "seatsOccupied": [
+      ]
     },
     {
       "id": 8,
       "hallName": "New Town",
       "hallId": "NEW",
       "capacity": 2000,
-      "numOfAvailableSeat": 1999,
+      "numOfAvailableSeat": 2000,
       "seatsOccupied": [
-        111
       ]
     }
   ],
@@ -145,31 +145,6 @@
       "eventRegisteredFor": null,
       "mailAddress": null,
       "hallBookedFor": null
-    },
-    {
-      "eventRegisteredFor": "21st Matriculation",
-      "hallBookedFor": "New Town",
-      "firstName": "frfssfd",
-      "lastName": "sdfsf",
-      "userName": "sdfasf",
-      "telephone": "5648618685165168",
-      "mailAddress": "asfsd@sldkjfols.com",
-      "userSeatNumber": 111,
-      "userId": "21NEW111",
-      "id": 2
-    },
-    {
-      "firstName": "jane",
-      "lastName": "doe",
-      "telephone": "+36938269596",
-      "userName": "hanjung",
-      "mailAddress": "han@jung.com",
-      "eventRegisteredFor": "Engineering Summit",
-      "hallBookedFor": "Suntory Hall",
-      "timeOfRegistration": "Sun Oct 17 2021 10:05:51 PM",
-      "userSeatNumber": 393,
-      "userId": "21SUN393",
-      "id": 3
     }
   ]
 }

@@ -384,17 +384,10 @@ const overallProcedure = {
       numberGenerated = 1;
       // theCentre.seatsOccupied.push(numberGenerated);
       theCentre.numOfAvailableSeat -= 1;
-    } else if (
-      numberGenerated !== 0 &&
-      !theCentre.seatsOccupied.includes(numberGenerated)
-    ) {
-      // debugger;
-      // theCentre.seatsOccupied.push(numberGenerated);
-      // theCentre.numOfAvailableSeat -= 1;
     } else {
       // debugger;
-      this.getRandomNumber(this.centresInfo.numOfAvailableSeat);
-    }
+      this.getRandomNumber(theCentre.numOfAvailableSeat);
+    };
 
     // if seat is available, before giving seat number, let's store remaining userDetails
 
@@ -467,6 +460,7 @@ const overallProcedure = {
       body: JSON.stringify(data),
     };
     fetch(uri + endpoint, otherOptions);
+
 
     // this.revealSeatNumber();
   },
