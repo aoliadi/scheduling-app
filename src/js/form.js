@@ -37,7 +37,7 @@ const overallProcedure = {
   },
 
   createOptions(arr, purpose, defaultChoice) {
-    //If items in the array (i.e. arr) is more than one, create a default option before accessing array contents.
+    //If items in arr is more than one, create a default option before accessing array contents.
     // if it is not more than one, set it as null so that the only option is the only one created.
     let allTheOptions =
       arr.length > 1
@@ -285,11 +285,9 @@ const overallProcedure = {
 
         // the 1st filter function checks for centres hallId that matches any of the "halls" array-item and creates an array of the centres
         // the 2nd filter function removes any of the hall where there's no vacant seat for candidates
-        // the map function then extracts only the hallName of the centres available for the event
         let result = data
           .filter((item) => halls.includes(item.hallId))
           .filter((centre) => centre.numOfAvailableSeat !== 0);
-        // .map(item => item.hallName);
 
         if (result.length > 1) {
           this.domElements.theCentre.disabled = false;
@@ -405,20 +403,24 @@ const overallProcedure = {
       this.getRandomNumber(this.centresInfo.numOfAvailableSeat);
     }
 
-    // if seat is available, before giving seat number, let's store userDetails
+    // if seat is available, before giving seat number, let's store remaining userDetails
 
     let candidateNumber = this.addZeroes({
       theNumber: numberGenerated,
       desiredLength: theCentre.capacity.toString().length,
-    });
-    let year = new Date().getFullYear().toString().slice(2);
-
+    }),
+        dateFunc = new Date(),
+        currentTime = dateFunc.toLocaleTimeString(),
+        currentDate = dateFunc.toDateString(),
+        currentYear = dateFunc.getFullYear().toString().slice(2);
+  
+        
     theCentre.numOfAvailableSeat -= 1;
     theCentre.seatsOccupied.push(candidateNumber);
-
+        
+    this.currentUserDetails.timeOfRegistration = `${currentDate} ${currentTime}`;
     this.currentUserDetails.userSeatNumber = candidateNumber;
-    this.currentUserDetails.userId =
-      "" + year + theCentre.hallId + candidateNumber;
+    this.currentUserDetails.userId = "" + currentYear + theCentre.hallId + candidateNumber;
 
     //then giveSeatNumber to user
     this.giveSeatNumber();

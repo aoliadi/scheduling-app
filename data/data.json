@@ -107,8 +107,10 @@
       "hallName": "Suntory Hall",
       "hallId": "SUN",
       "capacity": 1500,
-      "numOfAvailableSeat": 1500,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 1499,
+      "seatsOccupied": [
+        393
+      ]
     },
     {
       "id": 7,
@@ -155,6 +157,19 @@
       "userSeatNumber": 111,
       "userId": "21NEW111",
       "id": 2
+    },
+    {
+      "firstName": "jane",
+      "lastName": "doe",
+      "telephone": "+36938269596",
+      "userName": "hanjung",
+      "mailAddress": "han@jung.com",
+      "eventRegisteredFor": "Engineering Summit",
+      "hallBookedFor": "Suntory Hall",
+      "timeOfRegistration": "Sun Oct 17 2021 10:05:51 PM",
+      "userSeatNumber": 393,
+      "userId": "21SUN393",
+      "id": 3
     }
   ]
 }
