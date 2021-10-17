@@ -183,9 +183,10 @@ const overallProcedure = {
     handlerObjectKey.checkEvent = theEvent.addEventListener("change", (e) =>
       this.availableEvents(e)
     );
-    handlerObjectKey.checkCentre = theCentre.addEventListener("change", (e) =>
-      this.storeDetails("centre", e)
-    );
+    handlerObjectKey.checkCentre = theCentre.addEventListener("change", (e) => {
+      this.storeDetails("centre", e);
+      this.readyForSubmission();
+    });
     handlerObjectKey.submit = submitButton.addEventListener("click", (e) =>
       this.submission(e)
     );
@@ -318,6 +319,7 @@ const overallProcedure = {
 
         //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
         this.afterCheck[`${param}`] = chosenCentre == "null" ? false : true;
+        console.log(param);
 
         [this.centreInfo] = this.centres.filter(
           (item) => item.hallName === chosenCentre
@@ -397,21 +399,21 @@ const overallProcedure = {
     // if seat is available, before giving seat number, let's store remaining userDetails
 
     let candidateNumber = this.addZeroes({
-      theNumber: numberGenerated,
-      desiredLength: theCentre.capacity.toString().length,
-    }),
-        dateFunc = new Date(),
-        currentTime = dateFunc.toLocaleTimeString(),
-        currentDate = dateFunc.toDateString(),
-        currentYear = dateFunc.getFullYear().toString().slice(2);
-  
-        
+        theNumber: numberGenerated,
+        desiredLength: theCentre.capacity.toString().length,
+      }),
+      dateFunc = new Date(),
+      currentTime = dateFunc.toLocaleTimeString(),
+      currentDate = dateFunc.toDateString(),
+      currentYear = dateFunc.getFullYear().toString().slice(2);
+
     theCentre.numOfAvailableSeat -= 1;
     theCentre.seatsOccupied.push(candidateNumber);
-        
+
     this.currentUserDetails.timeOfRegistration = `${currentDate} ${currentTime}`;
     this.currentUserDetails.userSeatNumber = candidateNumber;
-    this.currentUserDetails.userId = "" + currentYear + theCentre.hallId + candidateNumber;
+    this.currentUserDetails.userId =
+      "" + currentYear + theCentre.hallId + candidateNumber;
 
     //then giveSeatNumber to user
     this.giveSeatNumber();
