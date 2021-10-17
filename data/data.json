@@ -109,8 +109,7 @@
       "hallId": "SUN",
       "capacity": 1500,
       "numOfAvailableSeat": 1500,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 7,
@@ -118,8 +117,7 @@
       "hallId": "OLD",
       "capacity": 2500,
       "numOfAvailableSeat": 2500,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 8,
@@ -127,8 +125,7 @@
       "hallId": "NEW",
       "capacity": 2000,
       "numOfAvailableSeat": 2000,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     }
   ],
   "userProfiles": [
