@@ -331,15 +331,6 @@ const overallProcedure = {
     }
   },
 
-  // storeUserDetails({label, theInputValue}) {
-  //     let dateFunc = new Date(),
-  //         currentTime = dateFunc.toLocaleTimeString(),
-  //         currentDate = dateFunc.toDateString();
-
-  //     this.currentUserDetails[`${label}`] = theInputValue;
-  //     this.currentUserDetails.timeOfRegistration = `${currentDate} ${currentTime}`;
-  // },
-
   anyFalseValue(obj) {
     let arr = [];
     for (let [prop, val] of Object.entries(obj)) {
