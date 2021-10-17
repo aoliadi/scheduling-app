@@ -123,8 +123,10 @@
       "hallName": "New Town",
       "hallId": "NEW",
       "capacity": 2000,
-      "numOfAvailableSeat": 2000,
-      "seatsOccupied": []
+      "numOfAvailableSeat": 1999,
+      "seatsOccupied": [
+        111
+      ]
     }
   ],
   "userProfiles": [
@@ -141,6 +143,18 @@
       "eventRegisteredFor": null,
       "mailAddress": null,
       "hallBookedFor": null
+    },
+    {
+      "eventRegisteredFor": "21st Matriculation",
+      "hallBookedFor": "New Town",
+      "firstName": "frfssfd",
+      "lastName": "sdfsf",
+      "userName": "sdfasf",
+      "telephone": "5648618685165168",
+      "mailAddress": "asfsd@sldkjfols.com",
+      "userSeatNumber": 111,
+      "userId": "21NEW111",
+      "id": 2
     }
   ]
 }

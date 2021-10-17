@@ -256,14 +256,13 @@ const overallProcedure = {
   availableCentres(theEvent) {
     let halls = null;
 
-    //  this goes through the eventHalls route and gets the hall(s) available to host that event
-    this.fetchData(uri + `eventHalls?event=${theEvent}`)
+    //  this returns the chosen event after filter
+    this.fetchData(uri + `events?event=${theEvent}`)
       .then((data) => {
-        // the data will most likely always be a single-item array (i.e. data.length === 1)
-        // so, we choose the first array item {data[0] i.e. data[1-1]}
-        const theChosenOption = data[data.length - 1];
+        // the data will most likely always be a single-item array
+        // so, we destructure its first (and only) item into theChosenOption
+        const [theChosenOption] = data;
 
-        // this is the array item chosen with data[0].
         // then its "halls" property value(s) is/are spread into "halls"
         // [{"id": 7,"event": "FOSIC 2020","halls": ["NEW"]}]
         halls = [...theChosenOption.halls];
