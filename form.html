@@ -1,92 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome...Kindly provide correct information.</title>
-    <link type="text/css" rel="stylesheet" href="./src/css/form.css">
+    <link type="text/css" rel="stylesheet" href="./src/css/form.css" />
     <script defer src="./src/js/form.js"></script>
-    <script defer src="./src/js/check.js"></script>
-</head>
-<body>
+    <script defer type="module" src="./src/js/check.js"></script>
+    <script defer src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+
+  <body>
+      <input type="button" class="swal" value="click">
     <section class="form-section__wrapper">
-        <form action="" id="form-js" class="form__container" autocomplete="off">
-            <header class="form-section__header">
-                <h1 class="form-section__heading">
-                    Welcome!
-                </h1>
-                <p class="form-section__paragraph">
-                    Kindly provide correct information.
-                </p>
-                <small>
-                    Labels with * are compulsory.
-                </small>
-            </header>
-            <ul class="input-list__container">
-                <li class="input-list__item grid">
-                    <div class="">
-                        <label for="first_name-js" class="compulsory">
-                            First Name
-                        </label>
-                        <input type="text" name="first_name" id="first_name-js" class="input input--text first_name" placeholder="Jane">
-                    </div>
-                    <div class="">
-                        <label for="last_name-js" class="compulsory">
-                            Last Name
-                        </label>
-                        <input type="text" name="last_name" id="last_name-js" class="input input--text last_name" placeholder="Doe">
-                    </div>
-                </li>
-                <li class="input-list__item grid">
-                    <div class="input-list__item">
-                        <label for="tel-js">
-                            Telephone
-                        </label>
-                        <input type="tel" pattern="\d*" name="tel" id="tel-js" class="input input--tel tel" placeholder="0123-456-7889">
-                    </div>
-                    <div class="input-list__item">
-                        <label for="username-js">
-                            Username
-                        </label>
-                        <input type="ext" name="username" id="username-js" class="input input--username username" placeholder="john-doe">
-                    </div>
-                </li>
-                <li class="input-list__item">
-                    <label for="email-js" class="compulsory">
-                        E-mail Address
-                    </label>
-                    <input type="email" name="email" id="email-js" class="input input--email email" placeholder="someone@example.com">
-                </li>
-                <!-- <li class="input-list__item grid"> -->
-                    <li class="input-list__item">
-                        <label for="purpose-js" class="compulsory">
-                            Event
-                        </label>
-                        <select name="events" id="purpose-js" class="input">
-                            <option value="null">What are you here for?</option>
-                            <option value="event1">Purpose1</option>
-                            <option value="event2">Purpose2</option>
-                            <option value="event3">Purpose3</option>
-                        </select>
-                    </li>
-                    <li class="input-list__item">
-                        <label for="centre-js">
-                            Centre
-                        </label>
-                        <select name="" id="centre-js" class="input" disabled>
-                            <option value="null">Choose a hall</option>
-                        </select>
-                    </li>
-                <!-- </li> -->
-                <li class="input-list__item">
-                    <button type="submit" class="btn btn--form" id="btn--submit-js" disabled>
-                        Book a seat
-                    </button>
-                </li>
-            </ul>
-        </form>
-        
+      <form action="" id="form-js" class="form__container" autocomplete="off">
+        <header class="form-section__header">
+          <h1 class="form-section__heading">Welcome!</h1>
+          <p class="form-section__paragraph">
+            Kindly provide correct information.
+          </p>
+          <small> Labels with * are compulsory. </small>
+        </header>
+        <ul class="input-list__container">
+          <li class="input-list__item grid">
+            <div class="">
+              <label for="first_name-js" class="compulsory"> First Name </label>
+              <input
+                type="text"
+                name="first_name"
+                id="first_name-js"
+                class="input input--text first_name"
+                placeholder="Jane"
+              />
+            </div>
+            <div class="">
+              <label for="last_name-js" class="compulsory"> Last Name </label>
+              <input
+                type="text"
+                name="last_name"
+                id="last_name-js"
+                class="input input--text last_name"
+                placeholder="Doe"
+              />
+            </div>
+          </li>
+          <li class="input-list__item grid">
+            <div class="input-list__item">
+              <label for="tel-js"> Telephone </label>
+              <input
+                type="tel"
+                pattern="\d*"
+                name="tel"
+                id="tel-js"
+                class="input input--tel tel"
+                placeholder="0123-456-7889"
+              />
+            </div>
+            <div class="input-list__item">
+              <label for="username-js"> Username </label>
+              <input
+                type="ext"
+                name="username"
+                id="username-js"
+                class="input input--username username"
+                placeholder="john-doe"
+              />
+            </div>
+          </li>
+          <li class="input-list__item">
+            <label for="email-js" class="compulsory"> E-mail Address </label>
+            <input
+              type="email"
+              name="email"
+              id="email-js"
+              class="input input--email email"
+              placeholder="someone@example.com"
+            />
+          </li>
+          <!-- <li class="input-list__item grid"> -->
+          <li class="input-list__item">
+            <label for="purpose-js" class="compulsory"> Event </label>
+            <select name="events" id="purpose-js" class="input">
+              <option value="null">What are you here for?</option>
+              <option value="event1">Purpose1</option>
+              <option value="event2">Purpose2</option>
+              <option value="event3">Purpose3</option>
+            </select>
+          </li>
+          <li class="input-list__item">
+            <label for="centre-js"> Centre </label>
+            <select name="" id="centre-js" class="input" disabled>
+              <option value="null">Choose a hall</option>
+            </select>
+          </li>
+          <!-- </li> -->
+          <li class="input-list__item">
+            <button
+              type="submit"
+              class="btn btn--form"
+              id="btn--submit-js"
+              disabled
+            >
+              Book a seat
+            </button>
+          </li>
+        </ul>
+      </form>
     </section>
-</body>
+  </body>
 </html>
