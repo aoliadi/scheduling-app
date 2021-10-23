@@ -75,14 +75,26 @@ const overallProcedure = {
     return allTheOptions;
   },
 
-  validClassName(action, targetElement) {
-    // console.log(action, targetElement);
-    if (action === "add") {
-      targetElement.classList.remove("input--invalid");
-      targetElement.classList.add("input--valid");
-    } else {
-      targetElement.classList.remove("input--valid");
-      targetElement.classList.add("input--invalid");
+  addClassName(action, targetElement) {
+    switch (action) {
+      case "valid":
+        targetElement.classList.remove("input--invalid");
+        targetElement.classList.add("input--valid");
+        break;
+
+      case "invalid":
+        targetElement.classList.remove("input--valid");
+        targetElement.classList.add("input--invalid");
+        break;
+
+      case "normal":
+        targetElement.classList.remove("input--invalid");
+        targetElement.classList.remove("input--valid");
+        targetElement.classList.add("input--normal");
+        break;
+
+      default:
+        break;
     }
   },
 
@@ -225,10 +237,10 @@ const overallProcedure = {
     }
 
     theResponse = regex.test(theInputValue);
-    theAction = theResponse ? "add" : "remove";
+    theAction = theResponse ? "valid" : "invalid";
 
     this.afterCheck[`${label}`] = theResponse;
-    this.validClassName(theAction, e.target);
+    this.addClassName(theAction, e.target);
     this.readyForSubmission();
     this.storeDetails(label, theInputValue);
   },
@@ -271,10 +283,8 @@ const overallProcedure = {
         if (this.centres) {
           // if the centres have been fetched from database before, there is no need in fetching again
           // so, "this.centres" is collected by the ".then" as the data, instead of a response from a fetch
-          console.log("no fetch");
           return this.centres;
         } else {
-          console.log("fetch");
           // if centres haven't been fetched from database, a fetch process is used
           // a promise is returned, and the ".then" collects the centres
           return this.fetchData(uri + "centres/");
@@ -319,7 +329,6 @@ const overallProcedure = {
 
         //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
         this.afterCheck[`${param}`] = chosenCentre == "null" ? false : true;
-        console.log(param);
 
         [this.centreInfo] = this.centres.filter(
           (item) => item.hallName === chosenCentre
@@ -466,16 +475,18 @@ const overallProcedure = {
   },
 
   revealSeatNumber() {
-    let parent = this;
-    const { currentUserDetails: userInfo } = parent;
-    const theForm = this.domElements.theForm;
+    const { currentUserDetails: userInfo } = this;
 
     Swal.fire({
       icon: "success",
       title: `Your reservation has been made for ${userInfo.eventRegisteredFor}.`,
       showCancelButton: true,
       confirmButtonText: "My seat number",
-      cancelButtonText: "Thank you!",
+      cancelButtonText:  `
+        <a href="./form.html" class="inherit--color">
+          Reserve seat for another participant.
+        </a>
+      `,
       showLoaderOnConfirm: true,
       allowOutsideClick: false,
       preConfirm: () => userInfo,
@@ -488,45 +499,17 @@ const overallProcedure = {
               <strong>${data.value.userId}</strong>.
               <br/>
           `,
-          footer: '<a href="./another.html">Register another user</a>',
+          showConfirmButton: false,
+          footer: `
+              <a href="./form.html" class="decoration">
+                Reserve seat for another participant.
+              </a>
+            `,
           allowOutsideClick: false,
         });
-
-        return parent.domElements.theForm;
       }
-    }).then(data => {
-      console.log(data);
-      this.resetForm(data)
-
-      // data.reset();
     });
-    // const domObjectKey = this.domElements;
-
-    // domObjectKey.alertSeatNumber.textContent =
-    //   this.currentUserDetails.userSeatNumber;
-    // domObjectKey.alertUsername.innerHTML = this.currentUserDetails.userName;
-    // domObjectKey.alertContainer.classList.remove("hidden");
-    // domObjectKey.formWrapper.classList.add("hidden");
-    // this.redirectUserToAnotherPage();
-  },
-
-  redirectUserToAnotherPage() {
-    window.location.assign("./another.html");
-  },
-
-  resetForm(form) {
-    form.reset();
-    this.afterCheck = {
-      firstName: false,
-      lastName: false,
-      mailAddress: false,
-      userName: false,
-      telephone: false,
-      centre: false,
-    };
-
-
-  },
+  }
 };
 
 window.addEventListener("DOMContentLoaded", () =>
