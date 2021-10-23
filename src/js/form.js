@@ -12,20 +12,9 @@ const overallProcedure = {
 
   currentUserDetails: {},
 
-  domElements: {
-    // loadingDiv: null,
-    // formWrapper: null,
-    // usernameInput: null,
-    // alertContainer: null,
-    // alertSeatNumber: null,
-    // alertUsername: null,
-    // alertCloseIcon: null,
-  },
+  domElements: {},
 
-  handlesEvents: {
-    // form: null,
-    // closeAlert: null,
-  },
+  handlesEvents: {},
 
   afterCheck: {
     firstName: false,
