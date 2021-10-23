@@ -387,7 +387,7 @@ const overallProcedure = {
     } else {
       // debugger;
       this.getRandomNumber(theCentre.numOfAvailableSeat);
-    };
+    }
 
     // if seat is available, before giving seat number, let's store remaining userDetails
 
@@ -430,6 +430,7 @@ const overallProcedure = {
     });
 
     // this.redirectUserToAnotherPage();
+    this.revealSeatNumber();
   },
 
   // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
@@ -461,23 +462,70 @@ const overallProcedure = {
     };
     fetch(uri + endpoint, otherOptions);
 
-
     // this.revealSeatNumber();
   },
 
   revealSeatNumber() {
-    const domObjectKey = this.domElements;
+    let parent = this;
+    const { currentUserDetails: userInfo } = parent;
+    const theForm = this.domElements.theForm;
 
-    domObjectKey.alertSeatNumber.textContent =
-      this.currentUserDetails.userSeatNumber;
-    domObjectKey.alertUsername.innerHTML = this.currentUserDetails.userName;
-    domObjectKey.alertContainer.classList.remove("hidden");
-    domObjectKey.formWrapper.classList.add("hidden");
+    Swal.fire({
+      icon: "success",
+      title: `Your reservation has been made for ${userInfo.eventRegisteredFor}.`,
+      showCancelButton: true,
+      confirmButtonText: "My seat number",
+      cancelButtonText: "Thank you!",
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false,
+      preConfirm: () => userInfo,
+    }).then((data) => {
+      if (data.isConfirmed) {
+        Swal.fire({
+          title: `Hello, ${data.value.lastName}`,
+          html: `
+              Your user ID is 
+              <strong>${data.value.userId}</strong>.
+              <br/>
+          `,
+          footer: '<a href="./another.html">Register another user</a>',
+          allowOutsideClick: false,
+        });
+
+        return parent.domElements.theForm;
+      }
+    }).then(data => {
+      console.log(data);
+      this.resetForm(data)
+
+      // data.reset();
+    });
+    // const domObjectKey = this.domElements;
+
+    // domObjectKey.alertSeatNumber.textContent =
+    //   this.currentUserDetails.userSeatNumber;
+    // domObjectKey.alertUsername.innerHTML = this.currentUserDetails.userName;
+    // domObjectKey.alertContainer.classList.remove("hidden");
+    // domObjectKey.formWrapper.classList.add("hidden");
     // this.redirectUserToAnotherPage();
   },
 
   redirectUserToAnotherPage() {
     window.location.assign("./another.html");
+  },
+
+  resetForm(form) {
+    form.reset();
+    this.afterCheck = {
+      firstName: false,
+      lastName: false,
+      mailAddress: false,
+      userName: false,
+      telephone: false,
+      centre: false,
+    };
+
+
   },
 };
 
