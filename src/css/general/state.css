@@ -2,6 +2,11 @@
     display: none;
 }
 
+.input--normal {
+    --border-color: var(--normal) !important;
+    /* border-width: 2px !important; */
+}
+
 .input--invalid {
     --border-color: var(--invalid) !important;
     border-width: 2px !important;

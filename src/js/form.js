@@ -12,20 +12,9 @@ const overallProcedure = {
 
   currentUserDetails: {},
 
-  domElements: {
-    // loadingDiv: null,
-    // formWrapper: null,
-    // usernameInput: null,
-    // alertContainer: null,
-    // alertSeatNumber: null,
-    // alertUsername: null,
-    // alertCloseIcon: null,
-  },
+  domElements: {},
 
-  handlesEvents: {
-    // form: null,
-    // closeAlert: null,
-  },
+  handlesEvents: {},
 
   afterCheck: {
     firstName: false,
@@ -75,14 +64,26 @@ const overallProcedure = {
     return allTheOptions;
   },
 
-  validClassName(action, targetElement) {
-    // console.log(action, targetElement);
-    if (action === "add") {
-      targetElement.classList.remove("input--invalid");
-      targetElement.classList.add("input--valid");
-    } else {
-      targetElement.classList.remove("input--valid");
-      targetElement.classList.add("input--invalid");
+  addClassName(action, targetElement) {
+    switch (action) {
+      case "valid":
+        targetElement.classList.remove("input--invalid");
+        targetElement.classList.add("input--valid");
+        break;
+
+      case "invalid":
+        targetElement.classList.remove("input--valid");
+        targetElement.classList.add("input--invalid");
+        break;
+
+      case "normal":
+        targetElement.classList.remove("input--invalid");
+        targetElement.classList.remove("input--valid");
+        targetElement.classList.add("input--normal");
+        break;
+
+      default:
+        break;
     }
   },
 
@@ -225,10 +226,10 @@ const overallProcedure = {
     }
 
     theResponse = regex.test(theInputValue);
-    theAction = theResponse ? "add" : "remove";
+    theAction = theResponse ? "valid" : "invalid";
 
     this.afterCheck[`${label}`] = theResponse;
-    this.validClassName(theAction, e.target);
+    this.addClassName(theAction, e.target);
     this.readyForSubmission();
     this.storeDetails(label, theInputValue);
   },
@@ -271,10 +272,8 @@ const overallProcedure = {
         if (this.centres) {
           // if the centres have been fetched from database before, there is no need in fetching again
           // so, "this.centres" is collected by the ".then" as the data, instead of a response from a fetch
-          console.log("no fetch");
           return this.centres;
         } else {
-          console.log("fetch");
           // if centres haven't been fetched from database, a fetch process is used
           // a promise is returned, and the ".then" collects the centres
           return this.fetchData(uri + "centres/");
@@ -319,7 +318,6 @@ const overallProcedure = {
 
         //if selected list-option value is null, set "value" as false and store it as the afterCheck value, and submit button is still disabled.
         this.afterCheck[`${param}`] = chosenCentre == "null" ? false : true;
-        console.log(param);
 
         [this.centreInfo] = this.centres.filter(
           (item) => item.hallName === chosenCentre
@@ -387,7 +385,7 @@ const overallProcedure = {
     } else {
       // debugger;
       this.getRandomNumber(theCentre.numOfAvailableSeat);
-    };
+    }
 
     // if seat is available, before giving seat number, let's store remaining userDetails
 
@@ -430,6 +428,7 @@ const overallProcedure = {
     });
 
     // this.redirectUserToAnotherPage();
+    this.revealSeatNumber();
   },
 
   // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
@@ -461,24 +460,45 @@ const overallProcedure = {
     };
     fetch(uri + endpoint, otherOptions);
 
-
     // this.revealSeatNumber();
   },
 
   revealSeatNumber() {
-    const domObjectKey = this.domElements;
+    const { currentUserDetails: userInfo } = this;
 
-    domObjectKey.alertSeatNumber.textContent =
-      this.currentUserDetails.userSeatNumber;
-    domObjectKey.alertUsername.innerHTML = this.currentUserDetails.userName;
-    domObjectKey.alertContainer.classList.remove("hidden");
-    domObjectKey.formWrapper.classList.add("hidden");
-    // this.redirectUserToAnotherPage();
-  },
-
-  redirectUserToAnotherPage() {
-    window.location.assign("./another.html");
-  },
+    Swal.fire({
+      icon: "success",
+      title: `Your reservation has been made for ${userInfo.eventRegisteredFor}.`,
+      showCancelButton: true,
+      confirmButtonText: "My seat number",
+      cancelButtonText:  `
+        <a href="./form.html" class="inherit--color">
+          Reserve seat for another participant.
+        </a>
+      `,
+      showLoaderOnConfirm: true,
+      allowOutsideClick: false,
+      preConfirm: () => userInfo,
+    }).then((data) => {
+      if (data.isConfirmed) {
+        Swal.fire({
+          title: `Hello, ${data.value.lastName}`,
+          html: `
+              Your user ID is 
+              <strong>${data.value.userId}</strong>.
+              <br/>
+          `,
+          showConfirmButton: false,
+          footer: `
+              <a href="./form.html" class="decoration">
+                Reserve seat for another participant.
+              </a>
+            `,
+          allowOutsideClick: false,
+        });
+      }
+    });
+  }
 };
 
 window.addEventListener("DOMContentLoaded", () =>

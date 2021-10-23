@@ -1,4 +1,13 @@
 :root {
     --invalid: red;
     --valid: green;
+    --normal: #e8e8e8;
+}
+
+.decoration {
+    text-decoration: underline;
+}
+
+.inherit--color {
+    color: inherit;
 }
