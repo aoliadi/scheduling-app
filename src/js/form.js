@@ -1,7 +1,7 @@
 "use strict";
 
-let uri = `https://scheduleet.herokuapp.com/`;
-// let uri = `http://localhost:8000/`;
+// let uri = `https://scheduleet.herokuapp.com/`;
+let uri = `http://localhost:8000/`;
 
 const overallProcedure = {
   centres: null,
@@ -27,7 +27,7 @@ const overallProcedure = {
 
   createOptions(arr, purpose, defaultChoice) {
     //If items in arr is more than one, create a default option before accessing array contents.
-    // if it is not more than one, set it as null so that the only option is the only one created.
+    // if it is not more than one, set it as null so that the only option available is the only option created.
     let allTheOptions =
       arr.length > 1
         ? `<option value="null" data-id="null">
@@ -138,7 +138,6 @@ const overallProcedure = {
     // domObjectKey.alertCloseIcon = document.querySelector('#icon--close-js');
   },
 
-  //fetch necessary data
   fetchData(uri) {
     const response = fetch(uri).then((res) => {
       if (res.status !== 200) {
@@ -150,7 +149,6 @@ const overallProcedure = {
     return response;
   },
 
-  //attach event listeners
   attachEvents({
     userName,
     firstName,
@@ -160,6 +158,7 @@ const overallProcedure = {
     submitButton,
     theEvent,
     theCentre,
+    theForm,
   }) {
     const handlerObjectKey = this.handlesEvents;
 
@@ -188,11 +187,10 @@ const overallProcedure = {
       this.storeDetails("centre", e);
       this.readyForSubmission();
     });
-    handlerObjectKey.submit = submitButton.addEventListener("click", (e) =>
-      this.submission(e)
-    );
-    // handlerObjectKey.form = formElem.addEventListener( "onsubmit", (e) => this.revealSeatNumber() );
-    // handlerObjectKey.closeAlert = closeIcon.addEventListener( "click", (e) => this.redirectUserToAnotherPage() );
+    handlerObjectKey.submit = theForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      this.submission();
+    });
   },
 
   validateInput(e, label) {
@@ -354,8 +352,7 @@ const overallProcedure = {
     }
   },
 
-  submission(e) {
-    e.preventDefault();
+  submission() {
     const theCentre = this.centreInfo;
 
     if (
@@ -412,6 +409,7 @@ const overallProcedure = {
 
   giveSeatNumber() {
     let data = this.centreInfo;
+
     this.sendToDatabase({
       uri,
       endpoint: `centres/${data.id}`,
@@ -428,7 +426,6 @@ const overallProcedure = {
     });
 
     // this.redirectUserToAnotherPage();
-    this.revealSeatNumber();
   },
 
   // it addZeroes to numbers: 23 becomes 0023 based on the desiredLength value passed
@@ -458,9 +455,10 @@ const overallProcedure = {
       },
       body: JSON.stringify(data),
     };
+
     fetch(uri + endpoint, otherOptions);
 
-    // this.revealSeatNumber();
+    this.revealSeatNumber();
   },
 
   revealSeatNumber() {
@@ -471,7 +469,7 @@ const overallProcedure = {
       title: `Your reservation has been made for ${userInfo.eventRegisteredFor}.`,
       showCancelButton: true,
       confirmButtonText: "My seat number",
-      cancelButtonText:  `
+      cancelButtonText: `
         <a href="./form.html" class="inherit--color">
           Reserve seat for another participant.
         </a>
@@ -498,7 +496,7 @@ const overallProcedure = {
         });
       }
     });
-  }
+  },
 };
 
 window.addEventListener("DOMContentLoaded", () =>
