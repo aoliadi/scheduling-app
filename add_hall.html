@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome...Kindly provide correct information.</title>
-
     <link type="text/css" rel="stylesheet" href="./src/css/form.css">
     <link type="text/css" rel="stylesheet" href="./src/css/add_hall.css">
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="./src/js/firebase.js"></script>
-    <script defer src="./src/js/form.js"></script>
-    <script defer src="./src/js/check.js"></script>
 </head>
+
 <body>
     <section class="form-section__wrapper">
         <form action="" id="form-js" class="form__container" autocomplete="off">
@@ -34,13 +30,15 @@
                         <label for="first_name-js" class="compulsory">
                             First Name
                         </label>
-                        <input type="text" name="first_name" id="first_name-js" class="input input--text first_name" placeholder="Jane">
+                        <input type="text" name="first_name" id="first_name-js" class="input input--text first_name"
+                            placeholder="Jane">
                     </div>
                     <div class="">
                         <label for="last_name-js" class="compulsory">
                             Last Name
                         </label>
-                        <input type="text" name="last_name" id="last_name-js" class="input input--text last_name" placeholder="Doe">
+                        <input type="text" name="last_name" id="last_name-js" class="input input--text last_name"
+                            placeholder="Doe">
                     </div>
                 </li>
                 <li class="input-list__item grid">
@@ -48,23 +46,27 @@
                         <label for="tel-js">
                             Telephone
                         </label>
-                        <input type="tel" pattern="\d*" name="tel" id="tel-js" class="input input--tel tel" placeholder="0123-456-7889">
+                        <input type="tel" pattern="\d*" name="tel" id="tel-js" class="input input--tel tel"
+                            placeholder="0123-456-7889">
                     </div>
                     <div class="input-list__item">
                         <label for="username-js">
                             Username
                         </label>
-                        <input type="ext" name="username" id="username-js" class="input input--username username" placeholder="john-doe">
+                        <input type="ext" name="username" id="username-js" class="input input--username username"
+                            placeholder="john-doe">
                     </div>
                 </li>
                 <li class="input-list__item">
                     <label for="email-js" class="compulsory">
                         E-mail Address
                     </label>
-                    <input type="email" name="email" id="email-js" class="input input--email email" placeholder="someone@example.com">
+                    <input type="email" name="email" id="email-js" class="input input--email email"
+                        placeholder="someone@example.com">
                 </li>
             </ul>
         </form>
     </section>
 </body>
+
 </html>
