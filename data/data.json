@@ -92,8 +92,7 @@
       "hallId": "EDR",
       "capacity": 500,
       "numOfAvailableSeat": 500,
-      "seatsOccupied": [
-      ]
+      "seatsOccupied": []
     },
     {
       "id": 5,
@@ -133,7 +132,7 @@
       "id": 1,
       "firstName": "admin",
       "lastName": "admin",
-      "userName": "admin",
+      "username": "admin",
       "telephone": "admin",
       "userSeatNumber": "000",
       "userId": "001ADMIN",
