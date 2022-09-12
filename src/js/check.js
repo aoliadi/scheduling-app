@@ -1,6 +1,6 @@
 "use strict";
 
-let val;
+let INPUT_VAL;
 
 const FORM = document.querySelector("#form-js"),
   INPUT = document.querySelector("#email-js"),
@@ -73,6 +73,8 @@ function notFoundModal() {
     icon: "error",
     title: "Oops...",
     text: "This email address does not exist",
+    allowOutsideClick: true,
+    backdrop: true,
   });
 }
 
@@ -81,14 +83,15 @@ function tryAgain() {
     icon: "info",
     title: "Oops...",
     text: "Something went wrong! Please, try again.",
+    allowOutsideClick: true,
+    backdrop: true,
   });
 }
 
 function showRegInfo(userInfo) {
-  let { lastName, userSeatNumber, hallBookedFor, eventRegisteredFor } =
-    userInfo;
+  let { lastName, hallBookedFor, eventRegisteredFor } = userInfo;
 
-  return Swal.fire({
+  Swal.fire({
     icon: "success",
     title: `Hi, ${lastName}.`,
     html: `You are booked for ${eventRegisteredFor} at the ${hallBookedFor}.`,
@@ -102,6 +105,10 @@ function showRegInfo(userInfo) {
     showLoaderOnConfirm: true,
     allowOutsideClick: false,
     preConfirm: () => userInfo,
+  }).then((data) => {
+    if (data.isConfirmed) {
+      showModal("FULL_INFO", data.value);
+    }
   });
 }
 
@@ -180,7 +187,10 @@ function showModal(action, data) {
 
 SUBMIT_BTN.addEventListener("click", (e) => {
   e.preventDefault();
-  fetch("https://scheduleet.herokuapp.com/userProfiles?userId=" + `${val}`)
+  fetch(
+    "https://scheduleet.herokuapp.com/userProfiles?mailAddress=" +
+      `${INPUT_VAL}`
+  )
     // fetch("http://localhost:8000/userProfiles?mailAddress=" + `${val}`)
     .then((res) => res.json())
     .then((searchResult) => {
@@ -194,11 +204,8 @@ SUBMIT_BTN.addEventListener("click", (e) => {
         return;
       }
 
-      showModal("INFO_FOUND", [searchResult]).then((data) => {
-        if (data.isConfirmed) {
-          showModal("FULL_INFO", data.value);
-        }
-      });
+      const [userInfo] = searchResult;
+      showModal("INFO_FOUND", userInfo);
     })
     .catch((err) => console.log(err.message));
   SUBMIT_BTN.disabled = true;
@@ -206,6 +213,6 @@ SUBMIT_BTN.addEventListener("click", (e) => {
 });
 
 INPUT.addEventListener("keyup", (e) => {
-  val = e.target.value.toLowerCase();
-  checkInput(val);
+  INPUT_VAL = e.target.value.toLowerCase();
+  checkInput(INPUT_VAL);
 });
