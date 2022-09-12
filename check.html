@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link type="text/css" rel="stylesheet" href="./src/css/form.css" />
+    <script defer src="./src/js/check.js"></script>
+    <script defer src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <form action="" id="form-js" class="form__container" autocomplete="off">
+        <header class="form-section__header">
+            <h1 class="form-section__heading">Welcome!</h1>
+            <p class="form-section__paragraph">
+                Kindly provide correct information.
+            </p>
+        </header>
+        <ul class="input-list__container">
+            <li class="input-list__item">
+                <label for="email-js" class=""> E-mail Address </label>
+                <input type="email" name="email" id="email-js" class="input input--normal input--email email"
+                    placeholder="someone@example.com" />
+            </li>
+            <li class="input-list__item">
+                <button type="submit" class="btn btn--form" id="btn--submit-js" disabled>
+                    Retrieve information
+                </button>
+            </li>
+        </ul>
+    </form>
+</body>
+
+</html>
