@@ -180,8 +180,8 @@ function showModal(action, data) {
 
 SUBMIT_BTN.addEventListener("click", (e) => {
   e.preventDefault();
-  // fetch("https://scheduleet.herokuapp.com/userProfiles?userId=" + `${val}`)
-  fetch("http://localhost:8000/userProfiles?mailAddress=" + `${val}`)
+  fetch("https://scheduleet.herokuapp.com/userProfiles?userId=" + `${val}`)
+    // fetch("http://localhost:8000/userProfiles?mailAddress=" + `${val}`)
     .then((res) => res.json())
     .then((searchResult) => {
       if (searchResult.length > 1) {
