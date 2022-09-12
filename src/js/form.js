@@ -20,7 +20,7 @@ const overallProcedure = {
     firstName: false,
     lastName: false,
     mailAddress: false,
-    userName: false,
+    username: false,
     telephone: false,
     centre: false,
   },
@@ -121,7 +121,7 @@ const overallProcedure = {
     domObjectKey.theForm = document.querySelector("#form-js");
     domObjectKey.firstName = document.querySelector("#first_name-js");
     domObjectKey.lastName = document.querySelector("#last_name-js");
-    domObjectKey.userName = document.querySelector("#username-js");
+    domObjectKey.username = document.querySelector("#username-js");
     domObjectKey.mailAddress = document.querySelector("#email-js");
     domObjectKey.telephoneNumber = document.querySelector("#tel-js");
     domObjectKey.theEvent = document.querySelector("select#purpose-js");
@@ -150,7 +150,7 @@ const overallProcedure = {
   },
 
   attachEvents({
-    userName,
+    username,
     firstName,
     lastName,
     mailAddress,
@@ -173,8 +173,8 @@ const overallProcedure = {
       "input",
       (e) => this.validateInput(e, "mailAddress")
     );
-    handlerObjectKey.checkUserName = userName.addEventListener("input", (e) =>
-      this.validateInput(e, "userName")
+    handlerObjectKey.checkUserName = username.addEventListener("input", (e) =>
+      this.validateInput(e, "username")
     );
     handlerObjectKey.checkTelephone = telephoneNumber.addEventListener(
       "input",
@@ -209,7 +209,7 @@ const overallProcedure = {
         regex = /1?[\s-]?\(?(\d{3})\)?[\s-]?\d{3}[\s-]?\d{4}/;
         break;
 
-      case "userName":
+      case "username":
         regex = /^[a-z0-9A-Z]{2,10}$/;
         break;
 
