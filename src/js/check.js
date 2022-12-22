@@ -188,7 +188,7 @@ function showModal(action, data) {
 SUBMIT_BTN.addEventListener("click", (e) => {
   e.preventDefault();
   fetch(
-    "https://scheduleet.herokuapp.com/userProfiles?mailAddress=" +
+    "https://resolute-decorous-bush.glitch.me/userProfiles?mailAddress=" +
       `${INPUT_VAL}`
   )
     // fetch("http://localhost:8000/userProfiles?mailAddress=" + `${val}`)

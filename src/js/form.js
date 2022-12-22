@@ -1,6 +1,8 @@
 "use strict";
 
-let uri = `https://scheduleet.herokuapp.com/`;
+// let uri = `https://scheduleet.herokuapp.com/`;
+let uri = `https://resolute-decorous-bush.glitch.me/`;
+
 // let uri = `http://localhost:8000/`;
 
 const overallProcedure = {

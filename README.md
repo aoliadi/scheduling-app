@@ -2,7 +2,7 @@
 
 **Backend**
 
-- https://scheduleet.herokuapp.com/
+- https://resolute-decorous-bush.glitch.me/
 
 **Frontend**
 
